@@ -550,6 +550,7 @@ class DjiDevice(private val context: Context) {
             DjiDeviceState.STARTING_STREAM -> processStartingStream(message)
             DjiDeviceState.STREAMING -> processStreaming(message)
             DjiDeviceState.STOPPING_STREAM -> processStoppingStream(message)
+            DjiDeviceState.CONNECTING -> { /* ignore messages while connecting */ }
             else -> {
                 djiLog("Message in state $state ignored")
             }
@@ -698,7 +699,7 @@ class DjiDevice(private val context: Context) {
                 writeMessage(message)
                 setState(DjiDeviceState.CONFIGURING)
             }
-            SettingsDjiDeviceModel.OSMO_POCKET_3, SettingsDjiDeviceModel.UNKNOWN -> {
+            SettingsDjiDeviceModel.OSMO_POCKET_3, SettingsDjiDeviceModel.OSMO_POCKET_4, SettingsDjiDeviceModel.UNKNOWN -> {
                 sendStartStreaming()
             }
         }
@@ -712,14 +713,25 @@ class DjiDevice(private val context: Context) {
     private fun sendStartStreaming() {
         val rtmp = rtmpUrl ?: return
         val res = resolution ?: return
-        val oa5 = model.hasNewProtocol()
-        val payload = DjiStartStreamingMessagePayload(rtmp, res, fps, bitrateKbps, oa5).encode()
-        val message = DjiMessage(START_STREAMING_TARGET, START_STREAMING_TRANSACTION_ID, START_STREAMING_TYPE, payload)
-        writeMessage(message)
+        val bitrateKbps = this.bitrateKbps
 
-        // New protocol (OA5P, OA6, 360): send confirm immediately alongside start-streaming,
+        when (model) {
+            SettingsDjiDeviceModel.OSMO_POCKET_4 -> {
+                val payload = DjiStartStreamingMessagePayloadPocket4(rtmp, res, fps, bitrateKbps).encode()
+                val message = DjiMessage(START_STREAMING_TARGET, START_STREAMING_TRANSACTION_ID, START_STREAMING_TYPE, payload)
+                writeMessage(message)
+            }
+            else -> {
+                val oa5 = model.hasNewProtocol()
+                val payload = DjiStartStreamingMessagePayload(rtmp, res, fps, bitrateKbps, oa5).encode()
+                val message = DjiMessage(START_STREAMING_TARGET, START_STREAMING_TRANSACTION_ID, START_STREAMING_TYPE, payload)
+                writeMessage(message)
+            }
+        }
+
+        // New protocol (OA5P, OA6, 360, Pocket 4): send confirm immediately alongside start-streaming,
         // matching Moblin iOS behaviour — both messages are queued before any response arrives.
-        if (oa5) {
+        if (model.hasNewProtocol()) {
             val confirmPayload = DjiConfirmStartStreamingMessagePayload().encode()
             val confirmMsg = DjiMessage(STOP_STREAMING_TARGET, STOP_STREAMING_TRANSACTION_ID, STOP_STREAMING_TYPE, confirmPayload)
             writeMessage(confirmMsg)

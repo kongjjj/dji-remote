@@ -10,6 +10,7 @@ enum class SettingsDjiDeviceModel {
     OSMO_ACTION_5_PRO,
     OSMO_ACTION_6,
     OSMO_POCKET_3,
+    OSMO_POCKET_4,
     OSMO_360;
 
     fun hasImageStabilization(): Boolean = when (this) {
@@ -18,7 +19,7 @@ enum class SettingsDjiDeviceModel {
     }
 
     fun hasNewProtocol(): Boolean = when (this) {
-        OSMO_ACTION_5_PRO, OSMO_ACTION_6, OSMO_360 -> true
+        OSMO_ACTION_5_PRO, OSMO_ACTION_6, OSMO_POCKET_4, OSMO_360 -> true
         else -> false
     }
 }
