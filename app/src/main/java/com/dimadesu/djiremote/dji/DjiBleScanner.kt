@@ -250,6 +250,10 @@ object DjiBleScanner {
                     Log.d(TAG, "  Detected: OSMO_POCKET_3")
                     SettingsDjiDeviceModel.OSMO_POCKET_3
                 }
+                0x0021 -> {
+                    Log.d(TAG, "  Detected: OSMO_POCKET_4")
+                    SettingsDjiDeviceModel.OSMO_POCKET_4
+                }
                 else -> {
                     Log.d(TAG, "  Unknown model ID: 0x${modelId.toString(16)}")
                     SettingsDjiDeviceModel.UNKNOWN

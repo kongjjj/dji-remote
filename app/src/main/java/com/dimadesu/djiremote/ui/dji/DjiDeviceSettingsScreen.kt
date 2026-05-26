@@ -282,8 +282,9 @@ fun DjiDeviceSettingsScreen(
         }
         } // end if hasImageStabilization
         
-        // FPS picker (only for Osmo Pocket 3, matching Moblin)
-        if (liveDevice.model == com.dimadesu.djiremote.dji.SettingsDjiDeviceModel.OSMO_POCKET_3) {
+        // FPS picker (only for Osmo Pocket 3 and Pocket 4, matching Moblin)
+        if (liveDevice.model == com.dimadesu.djiremote.dji.SettingsDjiDeviceModel.OSMO_POCKET_3 ||
+            liveDevice.model == com.dimadesu.djiremote.dji.SettingsDjiDeviceModel.OSMO_POCKET_4) {
             val fpsOptions = listOf(25, 30)
             var fps by remember { mutableStateOf(liveDevice.fps) }
             Spacer(modifier = Modifier.height(8.dp))
