@@ -38,6 +38,7 @@ List of all cameras that can work in theory:
 - ❓ DJI Osmo Action 6
 - ❓ DJI Osmo 360
 - ✅ DJI Osmo Pocket 3
+- ✅ DJI Osmo Pocket 4 (updated the code to add support, haven't yet received confirmation that it actually works)
 
 ## How to install
 
