@@ -1,0 +1,99 @@
+<resources>
+    <string name="app_name">DJI Remote</string>
+    <string name="dji_devices">DJI デバイス</string>
+    <string name="create">作成</string>
+    <string name="no_devices">デバイスがありません</string>
+    <string name="add_device_hint">「作成」を押してデバイスを追加してください</string>
+    <string name="remove_last_setup">最後の設定を削除</string>
+    <string name="export_import_settings">設定のエクスポート/インポート</string>
+    <string name="stop_stream">ストリーミング停止</string>
+    <string name="continue_last_stream">前回のストリーミングを再開</string>
+    <string name="confirm">確認</string>
+    <string name="confirm_remove_last_setup">最後の設定を削除してもよろしいですか？</string>
+    <string name="ok">OK</string>
+    <string name="cancel">キャンセル</string>
+    <string name="select_operation">操作を選択してください：</string>
+    <string name="export">エクスポート</string>
+    <string name="import_str">インポート</string>
+    <string name="export_success">エクスポート成功</string>
+    <string name="export_failed">エクスポート失敗</string>
+    <string name="imported_n_settings">%d 個の新しい設定をインポートしました</string>
+    <string name="no_new_settings">新しい設定は見つかりませんでした（重複の可能性があります）</string>
+    <string name="import_failed">インポート失敗</string>
+    <string name="open_hotspot">ホットスポットをオン</string>
+    <string name="close_hotspot">ホットスポットをオフ</string>
+
+    <!-- Device Settings -->
+    <string name="name">名前</string>
+    <string name="device">デバイス</string>
+    <string name="select_device">デバイスを選択</string>
+    <string name="wifi">WiFi</string>
+    <string name="ssid">SSID</string>
+    <string name="password">パスワード</string>
+    <string name="wifi_hint">DJI デバイスはこの WiFi に接続し、RTMP 経由でストリーミングします。</string>
+    <string name="rtmp">RTMP</string>
+    <string name="url">URL</string>
+    <string name="settings">設定</string>
+    <string name="resolution">解像度</string>
+    <string name="bitrate">ビットレート</string>
+    <string name="image_stabilization">映像のブレ補正</string>
+    <string name="fps">FPS</string>
+    <string name="bitrate_warning">高いビットレートは不安定になる可能性があります。</string>
+    <string name="status">ステータス</string>
+    <string name="start_stream">ストリーミング開始</string>
+    <string name="reconnecting">再接続中</string>
+    <string name="preparing">準備中...</string>
+    <string name="share_debug_logs">デバッグログを共有</string>
+    <string name="no_logs_toast">ログがありません — ストリーミングを先に開始してください</string>
+
+    <!-- States -->
+    <string name="state_idle">待機中</string>
+    <string name="state_discovering">検索中</string>
+    <string name="state_connecting">接続中</string>
+    <string name="state_pairing">ペアリング中</string>
+    <string name="state_stopping_stream">ストリーミング停止中</string>
+    <string name="state_preparing_stream">ストリーミング準備中</string>
+    <string name="state_setting_up_wifi">WiFi 設定中</string>
+    <string name="state_wifi_setup_failed">WiFi 設定失敗</string>
+    <string name="state_configuring">設定中</string>
+    <string name="state_starting_stream">ストリーミング開始中</string>
+    <string name="state_streaming">ストリーミング中</string>
+    <string name="state_reconnecting">再接続中</string>
+    <string name="state_unknown">不明</string>
+
+    <!-- Scanner -->
+    <string name="select_dji_device">DJI デバイスを選択</string>
+    <string name="bt_permission_required">この機能には、DJI デバイスをスキャンするための Bluetooth 権限が必要です</string>
+    <string name="grant_bt_permission">Bluetooth 権限を許可</string>
+    <string name="back">戻る</string>
+    <string name="bt_disabled">Bluetooth が無効です。有効にしてからもう一度お試しください。</string>
+    <string name="scan_error">スキャンエラー: %s</string>
+    <string name="show_all_devices">すべてのデバイスを表示</string>
+    <string name="refresh">更新</string>
+    <string name="exit">終了</string>
+
+    <!-- Language -->
+    <string name="set_language">設定言語</string>
+    <string name="english">英語</string>
+    <string name="traditional_chinese">繁体字中国語</string>
+    <string name="simplified_chinese">簡体字中国語</string>
+    <string name="japanese">日本語</string>
+    <string name="korean">한국어</string>
+    <string name="italian">イタリア語</string>
+    <string name="german">ドイツ語</string>
+    <string name="french">フランス語</string>
+    <string name="spanish">スペイン語</string>
+    <string name="portuguese">ポルトガル語</string>
+    <string name="russian">ロシア語</string>
+    <string name="sanskrit">サンスクリット語</string>
+    <string name="thai">タイ語</string>
+    <string name="vietnamese">ベトナム語</string>
+    <string name="notification_channel_name">デバイスの状態</string>
+    <string name="notification_title">DJI Remote の状態</string>
+    <string name="phone_temp">スマホ: %1$.1f°C</string>
+    <string name="dji_battery">DJI: %1$d%%</string>
+    <string name="no_device">デバイスなし</string>
+    <string name="enable_status_notification">ステータス通知を表示</string>
+    <string name="disable_status_notification">ステータス通知を無効にする</string>
+    <string name="exit_app">アプリを終了</string>
+</resources>

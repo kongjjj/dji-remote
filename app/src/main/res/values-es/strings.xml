@@ -1,0 +1,85 @@
+<resources>
+    <string name="app_name">DJI Remote</string>
+    <string name="dji_devices">Dispositivos DJI</string>
+    <string name="create">Crear</string>
+    <string name="no_devices">Aún no hay dispositivos</string>
+    <string name="add_device_hint">Presiona Crear para agregar un nuevo dispositivo</string>
+    <string name="remove_last_setup">Eliminar última configuración</string>
+    <string name="export_import_settings">Exportar/Importar Ajustes</string>
+    <string name="stop_stream">Detener Streaming</string>
+    <string name="continue_last_stream">Continuar último stream</string>
+    <string name="confirm">Confirmar</string>
+    <string name="confirm_remove_last_setup">¿Estás seguro de que quieres eliminar la última configuración?</string>
+    <string name="ok">Aceptar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="select_operation">Por favor, selecciona una operación:</string>
+    <string name="export">Exportar</string>
+    <string name="import_str">Importar</string>
+    <string name="export_success">Exportación exitosa</string>
+    <string name="export_failed">Exportación fallida</string>
+    <string name="imported_n_settings">Se importaron %d nuevos ajustes</string>
+    <string name="no_new_settings">No se encontraron nuevos ajustes (posibles duplicados)</string>
+    <string name="import_failed">Importación fallida</string>
+    <string name="open_hotspot">Abrir punto de acceso</string>
+    <string name="close_hotspot">Cerrar punto de acceso</string>
+
+    <!-- Device Settings -->
+    <string name="name">Nombre</string>
+    <string name="device">Dispositivo</string>
+    <string name="select_device">Seleccionar dispositivo</string>
+    <string name="wifi">WiFi</string>
+    <string name="ssid">SSID</string>
+    <string name="password">Contraseña</string>
+    <string name="wifi_hint">El dispositivo DJI se conectará a este WiFi y transmitirá a través de RTMP.</string>
+    <string name="rtmp">RTMP</string>
+    <string name="url">URL</string>
+    <string name="settings">Ajustes</string>
+    <string name="resolution">Resolución</string>
+    <string name="bitrate">Tasa de bits</string>
+    <string name="image_stabilization">Estabilización de imagen</string>
+    <string name="fps">FPS</string>
+    <string name="bitrate_warning">Una tasa de bits alta podría ser inestable.</string>
+    <string name="status">Estado</string>
+    <string name="start_stream">Iniciar Streaming</string>
+    <string name="reconnecting">Intentando reconectar...</string>
+    <string name="preparing">Preparando...</string>
+    <string name="share_debug_logs">Compartir registros de depuración</string>
+    <string name="no_logs_toast">Aún no hay registros — inicia un stream primero</string>
+
+    <!-- States -->
+    <string name="state_idle">Inactivo</string>
+    <string name="state_discovering">Descubriendo...</string>
+    <string name="state_connecting">Conectando...</string>
+    <string name="state_pairing">Emparejando...</string>
+    <string name="state_stopping_stream">Deteniendo flujo</string>
+    <string name="state_preparing_stream">Preparando flujo</string>
+    <string name="state_setting_up_wifi">Configurando WiFi</string>
+    <string name="state_wifi_setup_failed">Error en configuración WiFi</string>
+    <string name="state_configuring">Configurando</string>
+    <string name="state_starting_stream">Iniciando flujo</string>
+    <string name="state_streaming">Transmitiendo</string>
+    <string name="state_reconnecting">Reconectando</string>
+    <string name="state_unknown">Desconocido</string>
+
+    <!-- Scanner -->
+    <string name="select_dji_device">Seleccionar Dispositivo DJI</string>
+    <string name="bt_permission_required">Esta función requiere permiso de Bluetooth para buscar dispositivos DJI.</string>
+    <string name="grant_bt_permission">Conceder permiso de Bluetooth</string>
+    <string name="back">Atrás</string>
+    <string name="bt_disabled">El Bluetooth está desactivado. Por favor, actívalo e inténtalo de nuevo.</string>
+    <string name="scan_error">Error de escaneo: %s</string>
+    <string name="show_all_devices">Mostrar todos los dispositivos</string>
+    <string name="refresh">Actualizar</string>
+    <string name="exit">Salir</string>
+
+    <!-- Language -->
+    <string name="set_language">Establecer idioma</string>
+    <string name="notification_channel_name">Estado del dispositivo</string>
+    <string name="notification_title">Estado de DJI Remote</string>
+    <string name="phone_temp">Teléfono: %1$.1f°C</string>
+    <string name="dji_battery">DJI: %1$d%%</string>
+    <string name="no_device">Sin dispositivo</string>
+    <string name="enable_status_notification">Mostrar notificación de estado</string>
+    <string name="disable_status_notification">Desactivar notificación de estado</string>
+    <string name="exit_app">Salir de la aplicación</string>
+</resources>

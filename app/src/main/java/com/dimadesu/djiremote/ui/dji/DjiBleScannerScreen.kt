@@ -13,7 +13,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.dimadesu.djiremote.R
 import com.dimadesu.djiremote.dji.DjiBleScanner
 import android.os.Build
 import android.util.Log
@@ -29,7 +31,7 @@ fun DjiBleScannerScreen(onSelect: (String, String, com.dimadesu.djiremote.dji.Se
     var showAllDevices by remember { mutableStateOf(false) }
 
     Log.d(TAG, "Screen rendered: hasPermissions=${DjiBleScanner.hasPermissions(context)}, btEnabled=$isBtEnabled, devices=${discoveredState.size}")
-    
+
     val hasPermissions = DjiBleScanner.hasPermissions(context)
 
     val permissionsLauncher = rememberLauncherForActivityResult(
@@ -51,11 +53,11 @@ fun DjiBleScannerScreen(onSelect: (String, String, com.dimadesu.djiremote.dji.Se
     }
 
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-        Text("Select DJI device")
+        Text(stringResource(R.string.select_dji_device))
         Spacer(modifier = Modifier.height(8.dp))
 
         if (!hasPermissions) {
-            Text("This feature requires Bluetooth permissions to scan for DJI devices.")
+            Text(stringResource(R.string.bt_permission_required))
             Spacer(modifier = Modifier.height(8.dp))
             Button(onClick = {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -69,25 +71,25 @@ fun DjiBleScannerScreen(onSelect: (String, String, com.dimadesu.djiremote.dji.Se
                         Manifest.permission.ACCESS_FINE_LOCATION
                     ))
                 }
-            }) { Text("Grant Bluetooth permissions") }
+            }) { Text(stringResource(R.string.grant_bt_permission)) }
             Spacer(modifier = Modifier.height(8.dp))
-            Button(onClick = { onBack() }) { Text("Back") }
+            Button(onClick = { onBack() }) { Text(stringResource(R.string.back)) }
             Spacer(modifier = Modifier.height(8.dp))
             return@Column
         }
 
         if (!isBtEnabled) {
-            Text("Bluetooth is disabled on this device. Please enable Bluetooth and try again.")
+            Text(stringResource(R.string.bt_disabled))
             Spacer(modifier = Modifier.height(8.dp))
         }
 
         scanError?.let { err ->
-            Text("Scan error: $err")
+            Text(stringResource(R.string.scan_error, err))
             Spacer(modifier = Modifier.height(8.dp))
         }
 
         Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
-            Text("Show all devices")
+            Text(stringResource(R.string.show_all_devices))
             Spacer(modifier = Modifier.width(8.dp))
             androidx.compose.material3.Switch(checked = showAllDevices, onCheckedChange = { showAllDevices = it })
         }
@@ -106,8 +108,8 @@ fun DjiBleScannerScreen(onSelect: (String, String, com.dimadesu.djiremote.dji.Se
             }
         }
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            Button(onClick = { DjiBleScanner.startScanning(context, !showAllDevices) }) { Text("Rescan") }
-            Button(onClick = { DjiBleScanner.stopScanning(); onBack() }) { Text("Back") }
+            Button(onClick = { DjiBleScanner.startScanning(context, !showAllDevices) }) { Text(stringResource(R.string.refresh)) }
+            Button(onClick = { DjiBleScanner.stopScanning(); onBack() }) { Text(stringResource(R.string.exit)) }
         }
     }
 }

@@ -8,7 +8,10 @@ import java.util.UUID
 object DjiRepository {
     private val _devices = MutableStateFlow<List<SettingsDjiDevice>>(emptyList())
     val devices: StateFlow<List<SettingsDjiDevice>> = _devices
-    
+
+    private val _lastUsedDeviceId = MutableStateFlow<UUID?>(null)
+    val lastUsedDeviceId: StateFlow<UUID?> = _lastUsedDeviceId
+
     private var context: Context? = null
     private var isInitialized = false
 
@@ -16,17 +19,18 @@ object DjiRepository {
         if (isInitialized) return
         this.context = context.applicationContext
         isInitialized = true
-        
+
         // Load devices from storage
         _devices.value = DjiDeviceStorage.loadDevices(context)
-        
+        _lastUsedDeviceId.value = DjiDeviceStorage.loadLastUsedDeviceId(context)
+
         // If no devices, seed with example
         if (_devices.value.isEmpty()) {
             _devices.value = listOf(SettingsDjiDevice(name = "ActionCam 1"))
             saveToStorage()
         }
     }
-    
+
     private fun saveToStorage() {
         context?.let { ctx ->
             DjiDeviceStorage.saveDevices(ctx, _devices.value)
@@ -48,6 +52,11 @@ object DjiRepository {
         val updated = device.copy()
         _devices.value = _devices.value.map { if (it.id == updated.id) updated else it }
         saveToStorage()
+    }
+
+    fun updateLastUsedDevice(id: UUID) {
+        _lastUsedDeviceId.value = id
+        context?.let { DjiDeviceStorage.saveLastUsedDeviceId(it, id) }
     }
 }
 

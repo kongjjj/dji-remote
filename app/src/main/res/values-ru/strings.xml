@@ -1,0 +1,85 @@
+<resources>
+    <string name="app_name">DJI Remote</string>
+    <string name="dji_devices">Устройства DJI</string>
+    <string name="create">Создать</string>
+    <string name="no_devices">Устройств пока нет</string>
+    <string name="add_device_hint">Нажмите Создать, чтобы добавить новое устройство</string>
+    <string name="remove_last_setup">Удалить последнюю настройку</string>
+    <string name="export_import_settings">Экспорт/Импорт настроек</string>
+    <string name="stop_stream">Остановить трансляцию</string>
+    <string name="continue_last_stream">Продолжить последнюю трансляцию</string>
+    <string name="confirm">Подтвердить</string>
+    <string name="confirm_remove_last_setup">Вы уверены, что хотите удалить последнюю настройку?</string>
+    <string name="ok">ОК</string>
+    <string name="cancel">Отмена</string>
+    <string name="select_operation">Выберите операцию:</string>
+    <string name="export">Экспорт</string>
+    <string name="import_str">Импорт</string>
+    <string name="export_success">Экспорт выполнен успешно</string>
+    <string name="export_failed">Ошибка экспорта</string>
+    <string name="imported_n_settings">Импортировано %d новых настроек</string>
+    <string name="no_new_settings">Новых настроек не найдено (возможно, дубликаты)</string>
+    <string name="import_failed">Ошибка импорта</string>
+    <string name="open_hotspot">Включить точку доступа</string>
+    <string name="close_hotspot">Выключить точку доступа</string>
+
+    <!-- Device Settings -->
+    <string name="name">Имя</string>
+    <string name="device">Устройство</string>
+    <string name="select_device">Выбрать устройство</string>
+    <string name="wifi">WiFi</string>
+    <string name="ssid">SSID</string>
+    <string name="password">Пароль</string>
+    <string name="wifi_hint">Устройство DJI подключится к этому WiFi и будет транслировать через RTMP.</string>
+    <string name="rtmp">RTMP</string>
+    <string name="url">URL</string>
+    <string name="settings">Настройки</string>
+    <string name="resolution">Разрешение</string>
+    <string name="bitrate">Битрейт</string>
+    <string name="image_stabilization">Стабилизация изображения</string>
+    <string name="fps">FPS</string>
+    <string name="bitrate_warning">Высокий битрейт может быть нестабильным.</string>
+    <string name="status">Статус</string>
+    <string name="start_stream">Начать трансляцию</string>
+    <string name="reconnecting">Попытка переподключения...</string>
+    <string name="preparing">Подготовка...</string>
+    <string name="share_debug_logs">Поделиться логами отладки</string>
+    <string name="no_logs_toast">Логов пока нет — сначала запустите трансляцию</string>
+
+    <!-- States -->
+    <string name="state_idle">Ожидание</string>
+    <string name="state_discovering">Поиск...</string>
+    <string name="state_connecting">Подключение...</string>
+    <string name="state_pairing">Сопряжение...</string>
+    <string name="state_stopping_stream">Остановка потока</string>
+    <string name="state_preparing_stream">Подготовка потока</string>
+    <string name="state_setting_up_wifi">Настройка WiFi</string>
+    <string name="state_wifi_setup_failed">Ошибка настройки WiFi</string>
+    <string name="state_configuring">Настройка</string>
+    <string name="state_starting_stream">Запуск потока</string>
+    <string name="state_streaming">Трансляция</string>
+    <string name="state_reconnecting">Переподключение</string>
+    <string name="state_unknown">Неизвестно</string>
+
+    <!-- Scanner -->
+    <string name="select_dji_device">Выбрать устройство DJI</string>
+    <string name="bt_permission_required">Для поиска устройств DJI требуется разрешение на использование Bluetooth.</string>
+    <string name="grant_bt_permission">Предоставить разрешение Bluetooth</string>
+    <string name="back">Назад</string>
+    <string name="bt_disabled">Bluetooth отключен. Включите его и попробуйте снова.</string>
+    <string name="scan_error">Ошибка сканирования: %s</string>
+    <string name="show_all_devices">Показать все устройства</string>
+    <string name="refresh">Обновить</string>
+    <string name="exit">Выход</string>
+
+    <!-- Language -->
+    <string name="set_language">Выбрать язык</string>
+    <string name="notification_channel_name">Статус устройства</string>
+    <string name="notification_title">Статус DJI Remote</string>
+    <string name="phone_temp">Телефон: %1$.1f°C</string>
+    <string name="dji_battery">DJI: %1$d%%</string>
+    <string name="no_device">Нет устройства</string>
+    <string name="enable_status_notification">Показать уведомление о статусе</string>
+    <string name="disable_status_notification">Отключить уведомление о статусе</string>
+    <string name="exit_app">Выйти из приложения</string>
+</resources>

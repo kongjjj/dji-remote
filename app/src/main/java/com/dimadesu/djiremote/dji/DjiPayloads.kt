@@ -61,7 +61,7 @@ class DjiStartStreamingMessagePayload(
     private val resolution: SettingsDjiDeviceResolution,
     private val fps: Int,
     private val bitrateKbps: Int,
-    private val oa5: Boolean
+    private val model: SettingsDjiDeviceModel
 ) {
     companion object {
         val payload1 = byteArrayOf(0x00)
@@ -71,6 +71,10 @@ class DjiStartStreamingMessagePayload(
     }
 
     fun encode(): ByteArray {
+        if (model == SettingsDjiDeviceModel.OSMO_POCKET_4) {
+            return encodePocket4()
+        }
+
         val resolutionByte: Int = when (resolution) {
             SettingsDjiDeviceResolution.r480p -> 0x47
             SettingsDjiDeviceResolution.r720p -> 0x04
@@ -81,6 +85,7 @@ class DjiStartStreamingMessagePayload(
             30 -> 3
             else -> 0
         }
+        val oa5 = model.hasNewProtocol()
         val byte1 = if (oa5) 0x2A else 0x2E
 
         val writer = ByteWriter()
@@ -95,6 +100,33 @@ class DjiStartStreamingMessagePayload(
         writer.writeBytes(djiPackUrl(rtmpUrl))
         return writer.data
     }
+
+    private fun encodePocket4(): ByteArray {
+        val json = """{"codec":"HEVC","EnhancedRTMP":false,"supportStopLive":false,"watermark":0,"rtmpAddress":"$rtmpUrl","orientation":"landscape"}"""
+        val jsonBytes = json.toByteArray(Charsets.UTF_8)
+
+        val writer = ByteWriter()
+        writer.writeUInt8(0x01)
+        writer.writeUInt8(0x01)
+        writer.writeUInt16Le((bitrateKbps / 1000) and 0xFFFF)
+
+        val resByte = when (resolution) {
+            SettingsDjiDeviceResolution.r1080p -> 0x01
+            SettingsDjiDeviceResolution.r720p -> 0x02
+            SettingsDjiDeviceResolution.r480p -> 0x03
+        }
+        writer.writeUInt8(resByte)
+        writer.writeUInt8(fps)
+
+        writer.writeUInt8(0x01) // HEVC
+        writer.writeUInt8(0x00) // EnhancedRTMP false
+        writer.writeUInt8(0x00) // supportStopLive false
+
+        writer.writeUInt16Le(jsonBytes.size and 0xFFFF)
+        writer.writeBytes(jsonBytes)
+
+        return writer.data
+    }
 }
 
 class DjiConfirmStartStreamingMessagePayload {
@@ -103,48 +135,6 @@ class DjiConfirmStartStreamingMessagePayload {
     }
 
     fun encode(): ByteArray = payload
-}
-
-// Pocket 4 uses a JSON-wrapped start-streaming payload that's completely different
-// from the legacy binary format used by every other DJI camera.
-// Reverse-engineered from a PacketLogger capture of the official DJI Mimo app.
-class DjiStartStreamingMessagePayloadPocket4(
-    private val rtmpUrl: String,
-    private val resolution: SettingsDjiDeviceResolution,
-    private val fps: Int,
-    private val bitrateKbps: Int
-) {
-    companion object {
-        private val header = byteArrayOf(0x01, 0xB5.toByte(), 0x00)
-        private val middle = byteArrayOf(0x02, 0x01)
-        private val padding = byteArrayOf(0x00, 0x00, 0x00)
-    }
-
-    fun encode(): ByteArray {
-        val resolutionByte: Int = when (resolution) {
-            SettingsDjiDeviceResolution.r480p -> 0x47
-            SettingsDjiDeviceResolution.r720p -> 0x04
-            SettingsDjiDeviceResolution.r1080p -> 0x0A
-        }
-        val fpsByte: Int = when (fps) {
-            25 -> 2
-            30 -> 3
-            else -> 0
-        }
-        val json = """{"codec":"HEVC","EnhancedRTMP":false,"supportStopLive":false,"watermark":0,"rtmpAddress":"$rtmpUrl","orientation":"landscape"}"""
-        val jsonData = json.toByteArray(Charsets.UTF_8)
-
-        val writer = ByteWriter()
-        writer.writeBytes(header)
-        writer.writeUInt8(resolutionByte)
-        writer.writeUInt16Le(bitrateKbps and 0xFFFF)
-        writer.writeBytes(middle)
-        writer.writeUInt8(fpsByte)
-        writer.writeBytes(padding)
-        writer.writeUInt16Le(jsonData.size and 0xFFFF)
-        writer.writeBytes(jsonData)
-        return writer.data
-    }
 }
 
 class DjiStopStreamingMessagePayload {

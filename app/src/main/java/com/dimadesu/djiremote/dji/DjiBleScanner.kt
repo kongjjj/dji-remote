@@ -93,13 +93,13 @@ object DjiBleScanner {
             _scanError.value = "BLE scanner not available"
             return
         }
-        
+
         // Clear previous results
         foundDevices.clear()
         _discovered.value = emptyList()
         _scanError.value = null
         Log.d(TAG, "Starting BLE scan...")
-        
+
         callback = object : ScanCallback() {
             override fun onScanResult(callbackType: Int, result: ScanResult?) {
                 Log.d(TAG, "onScanResult called! callbackType=$callbackType, result=${result != null}")
@@ -107,9 +107,9 @@ object DjiBleScanner {
                     val scanRecord = result.scanRecord
                     val address = device.address ?: return
                     val name = device.name ?: address
-                    
+
                     Log.d(TAG, "Found device: name=$name, address=$address")
-                    
+
                     // Log manufacturer data for debugging
                     scanRecord?.manufacturerSpecificData?.let { mfgData ->
                         for (i in 0 until mfgData.size()) {
@@ -119,16 +119,16 @@ object DjiBleScanner {
                             Log.d(TAG, "  Manufacturer data [key=$key]: $hex")
                         }
                     }
-                    
+
                     if (this@DjiBleScanner.filterOnlyDji && !isDjiAdvertisement(scanRecord)) {
                         Log.d(TAG, "  Filtered out (not DJI)")
                         return
                     }
-                    
+
                     // Detect and log model
                     val model = getModelFromScanRecord(scanRecord)
                     Log.d(TAG, "  Device model: $model")
-                    
+
                     val id = UUID.nameUUIDFromBytes(address.toByteArray(StandardCharsets.UTF_8)).toString()
                     synchronized(foundDevices) {
                         if (foundDevices.none { it.id == id }) {
@@ -186,13 +186,13 @@ object DjiBleScanner {
 
     private fun isDjiAdvertisement(record: ScanRecord?): Boolean {
         if (record == null) return false
-        
+
         // DJI manufacturer ID is 0x08AA (2218 in decimal)
         // The manufacturer ID is stored as little-endian in the key
         // DJI Technology Co Ltd = 0x08AA (2218), Xtra Ltd = 0xF7AA (63402)
         val djiManufacturerId = 2218
         val xtraManufacturerId = 63402
-        
+
         // Check if either manufacturer ID exists
         for (mfgId in listOf(djiManufacturerId, xtraManufacturerId)) {
             val data = record.getManufacturerSpecificData(mfgId)
@@ -201,13 +201,13 @@ object DjiBleScanner {
                 return true
             }
         }
-        
+
         return false
     }
-    
+
     fun getModelFromScanRecord(record: ScanRecord?): SettingsDjiDeviceModel {
         if (record == null) return SettingsDjiDeviceModel.UNKNOWN
-        
+
         // Check both DJI and Xtra manufacturer IDs
         val djiManufacturerId = 2218
         val xtraManufacturerId = 63402
@@ -216,7 +216,7 @@ object DjiBleScanner {
             data = record.getManufacturerSpecificData(mfgId)
             if (data != null) break
         }
-        
+
         if (data != null && data.size >= 2) {
             // Model is in bytes 0-1 of manufacturer data (little-endian)
             val modelId = (data[0].toInt() and 0xFF) or ((data[1].toInt() and 0xFF) shl 8)
@@ -260,7 +260,7 @@ object DjiBleScanner {
                 }
             }
         }
-        
+
         return SettingsDjiDeviceModel.UNKNOWN
     }
 }

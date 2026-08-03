@@ -22,7 +22,7 @@ object DjiModel : DjiDeviceDelegate {
         Log.d(TAG, "  WiFi Password: ${settings.wifiPassword}")
         Log.d(TAG, "  RTMP URL: ${settings.rtmpUrl}")
         Log.d(TAG, "  Model: ${settings.model}")
-        
+
         val address = settings.bluetoothPeripheralAddress
         if (address == null) {
             Log.e(TAG, "Cannot start streaming: Bluetooth device address is null!")
@@ -40,7 +40,7 @@ object DjiModel : DjiDeviceDelegate {
             Log.e(TAG, "Cannot start streaming: RTMP URL is empty!")
             return
         }
-        
+
         Log.d(TAG, "All prerequisites met, starting stream...")
         val device = deviceWrappers.getOrPut(settings.id) {
             DjiDevice(context).also { it.delegate = this }
@@ -66,6 +66,9 @@ object DjiModel : DjiDeviceDelegate {
             model = model
         )
         Log.d(TAG, "DjiDevice.startLiveStream() called")
+
+        DjiRepository.updateLastUsedDevice(settings.id)
+
         // update repository state — use copy() so StateFlow sees a new object
         scope.launch(Dispatchers.Main) {
             DjiRepository.updateDevice(settings.copy(isStarted = true, state = SettingsDjiDeviceState.PREPARING_STREAM))
@@ -77,6 +80,18 @@ object DjiModel : DjiDeviceDelegate {
         device.stopLiveStream()
         scope.launch(Dispatchers.Main) {
             DjiRepository.updateDevice(settings.copy(isStarted = false, state = SettingsDjiDeviceState.IDLE))
+        }
+    }
+
+    fun stopAllStreaming() {
+        deviceWrappers.values.forEach { it.stopLiveStream() }
+        scope.launch(Dispatchers.Main) {
+            val allDevices = DjiRepository.devices.value
+            allDevices.forEach { device ->
+                if (device.isStarted || device.state != SettingsDjiDeviceState.IDLE) {
+                    DjiRepository.updateDevice(device.copy(isStarted = false, state = SettingsDjiDeviceState.IDLE))
+                }
+            }
         }
     }
 
@@ -104,18 +119,32 @@ object DjiModel : DjiDeviceDelegate {
                 DjiDeviceState.CONFIGURING -> SettingsDjiDeviceState.CONFIGURING
                 DjiDeviceState.STARTING_STREAM -> SettingsDjiDeviceState.STARTING_STREAM
                 DjiDeviceState.STREAMING -> SettingsDjiDeviceState.STREAMING
+                DjiDeviceState.RECONNECTING -> SettingsDjiDeviceState.RECONNECTING
             }
-            
+
             var updated = existing.copy(state = newState)
 
-            when (state) {
-                DjiDeviceState.IDLE, DjiDeviceState.WIFI_SETUP_FAILED -> {
-                    updated = updated.copy(isStarted = false)
-                }
-                else -> {}
+            // 當裝置閒置、停止串流或設置失敗時重置電量
+            if (newState == SettingsDjiDeviceState.IDLE ||
+                newState == SettingsDjiDeviceState.STOPPING_STREAM ||
+                newState == SettingsDjiDeviceState.WIFI_SETUP_FAILED) {
+                updated = updated.copy(batteryPercentage = null)
             }
+
+            // 移除 DjiDeviceState.IDLE 導致 isStarted = false 的判斷
+            // 只有在明確的 Wi-Fi 設置失敗時才停止（或者你也可以選擇不停止，讓用戶手動處理）
+            if (state == DjiDeviceState.WIFI_SETUP_FAILED) {
+                updated = updated.copy(isStarted = false)
+            }
+
             DjiRepository.updateDevice(updated)
         }
     }
 
+    override fun djiDeviceBatteryPercentage(device: DjiDevice, batteryPercentage: Int) {
+        scope.launch(Dispatchers.Main) {
+            val existing = getSettingsForDevice(device) ?: return@launch
+            DjiRepository.updateDevice(existing.copy(batteryPercentage = batteryPercentage))
+        }
+    }
 }

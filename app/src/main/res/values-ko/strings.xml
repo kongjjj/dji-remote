@@ -1,0 +1,99 @@
+<resources>
+    <string name="app_name">DJI Remote</string>
+    <string name="dji_devices">DJI 장치</string>
+    <string name="create">생성</string>
+    <string name="no_devices">장치가 없습니다</string>
+    <string name="add_device_hint">새 장치를 추가하려면 생성을 누르세요</string>
+    <string name="remove_last_setup">마지막 설정 제거</string>
+    <string name="export_import_settings">설정 내보내기/가져오기</string>
+    <string name="stop_stream">스트리밍 중지</string>
+    <string name="continue_last_stream">마지막 스트리밍 계속하기</string>
+    <string name="confirm">확인</string>
+    <string name="confirm_remove_last_setup">마지막 설정을 제거하시겠습니까?</string>
+    <string name="ok">확인</string>
+    <string name="cancel">취소</string>
+    <string name="select_operation">작업을 선택하세요:</string>
+    <string name="export">내보내기</string>
+    <string name="import_str">가져오기</string>
+    <string name="export_success">내보내기 성공</string>
+    <string name="export_failed">내보내기 실패</string>
+    <string name="imported_n_settings">%d개의 새 설정을 가져왔습니다</string>
+    <string name="no_new_settings">새 설정을 찾을 수 없습니다 (중복 가능성 있음)</string>
+    <string name="import_failed">가져오기 실패</string>
+    <string name="open_hotspot">핫스팟 켜기</string>
+    <string name="close_hotspot">핫스팟 끄기</string>
+
+    <!-- Device Settings -->
+    <string name="name">이름</string>
+    <string name="device">장치</string>
+    <string name="select_device">장치 선택</string>
+    <string name="wifi">WiFi</string>
+    <string name="ssid">SSID</string>
+    <string name="password">비밀번호</string>
+    <string name="wifi_hint">DJI 장치가 이 WiFi에 연결되어 RTMP로 스트리밍됩니다.</string>
+    <string name="rtmp">RTMP</string>
+    <string name="url">URL</string>
+    <string name="settings">설정</string>
+    <string name="resolution">해상도</string>
+    <string name="bitrate">비트레이트</string>
+    <string name="image_stabilization">이미지 안정화</string>
+    <string name="fps">FPS</string>
+    <string name="bitrate_warning">높은 비트레이트는 불안정할 수 있습니다.</string>
+    <string name="status">상태</string>
+    <string name="start_stream">스트리밍 시작</string>
+    <string name="reconnecting">재연결 시도 중...</string>
+    <string name="preparing">준비 중...</string>
+    <string name="share_debug_logs">디버그 로그 공유</string>
+    <string name="no_logs_toast">로그가 없습니다 — 스트리밍을 먼저 시작하세요</string>
+
+    <!-- States -->
+    <string name="state_idle">대기 중</string>
+    <string name="state_discovering">검색 중</string>
+    <string name="state_connecting">연결 중</string>
+    <string name="state_pairing">페어링 중</string>
+    <string name="state_stopping_stream">스트리밍 중지 중</string>
+    <string name="state_preparing_stream">스트리밍 준비 중</string>
+    <string name="state_setting_up_wifi">WiFi 설정 중</string>
+    <string name="state_wifi_setup_failed">WiFi 설정 실패</string>
+    <string name="state_configuring">구성 중</string>
+    <string name="state_starting_stream">스트리밍 시작 중</string>
+    <string name="state_streaming">스트리밍 중</string>
+    <string name="state_reconnecting">재연결 중</string>
+    <string name="state_unknown">알 수 없음</string>
+
+    <!-- Scanner -->
+    <string name="select_dji_device">DJI 장치 선택</string>
+    <string name="bt_permission_required">DJI 장치를 스캔하려면 블루투스 권한이 필요합니다.</string>
+    <string name="grant_bt_permission">블루투스 권한 허용</string>
+    <string name="back">뒤로</string>
+    <string name="bt_disabled">블루투스가 비활성화되었습니다. 활성화 후 다시 시도하세요.</string>
+    <string name="scan_error">스캔 오류: %s</string>
+    <string name="show_all_devices">모든 장치 표시</string>
+    <string name="refresh">새로고침</string>
+    <string name="exit">나가기</string>
+
+    <!-- Language -->
+    <string name="set_language">언어 설정</string>
+    <string name="english">영어</string>
+    <string name="traditional_chinese">번체 중국어</string>
+    <string name="simplified_chinese">간체 중국어</string>
+    <string name="japanese">日本語</string>
+    <string name="korean">한국어</string>
+    <string name="italian">이탈리아어</string>
+    <string name="german">독일어</string>
+    <string name="french">프랑스어</string>
+    <string name="spanish">스페인어</string>
+    <string name="portuguese">포르투갈어</string>
+    <string name="russian">러시아어</string>
+    <string name="sanskrit">산스크리트어</string>
+    <string name="thai">태국어</string>
+    <string name="vietnamese">베트남어</string>
+    <string name="notification_channel_name">기기 상태</string>
+    <string name="notification_title">DJI Remote 상태</string>
+    <string name="phone_temp">휴대폰: %1$.1f°C</string>
+    <string name="dji_battery">DJI: %1$d%%</string>
+    <string name="no_device">기기 없음</string>
+    <string name="enable_status_notification">상태 알림 표시</string>
+    <string name="disable_status_notification">상태 알림 비활성화</string>
+    <string name="exit_app">앱 종료</string>
+</resources>

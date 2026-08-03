@@ -1,0 +1,85 @@
+<resources>
+    <string name="app_name">DJI Remote</string>
+    <string name="dji_devices">DJI यन्त्राणि</string>
+    <string name="create">सृजतु</string>
+    <string name="no_devices">अद्यापि यन्त्रं नास्ति</string>
+    <string name="add_device_hint">नूतनयन्त्रं योजयितुं \'सृजतु\' नुदतु</string>
+    <string name="remove_last_setup">अन्तिमविन्यासम् अपसारयतु</string>
+    <string name="export_import_settings">निर्यात/आयात विन्यासाः</string>
+    <string name="stop_stream">प्रसारणं स्थगयतु</string>
+    <string name="continue_last_stream">अन्तिमप्रसारणं अनुवर्तताम्</string>
+    <string name="confirm">निश्चयः</string>
+    <string name="confirm_remove_last_setup">किं भवान् अन्तिमविन्यासम् अपसारयितुं इच्छति?</string>
+    <string name="ok">अस्तु</string>
+    <string name="cancel">निरस्तम्</string>
+    <string name="select_operation">कृपया क्रियां चिुनोतु:</string>
+    <string name="export">निर्यात</string>
+    <string name="import_str">आयात</string>
+    <string name="export_success">निर्यात सफलः</string>
+    <string name="export_failed">निर्यात विफलः</string>
+    <string name="imported_n_settings">%d नूतन विन्यासाः आयाताः</string>
+    <string name="no_new_settings">नूतन विन्यासः न लब्धः</string>
+    <string name="import_failed">आयात विफलः</string>
+    <string name="open_hotspot">Hotspot उद्घाटयतु</string>
+    <string name="close_hotspot">Hotspot पिधत्ते</string>
+
+    <!-- Device Settings -->
+    <string name="name">नाम</string>
+    <string name="device">यन्त्रम्</string>
+    <string name="select_device">यन्त्रं चिनोतु</string>
+    <string name="wifi">WiFi</string>
+    <string name="ssid">SSID</string>
+    <string name="password">कूटशब्दः</string>
+    <string name="wifi_hint">DJI यन्त्रं एतेन WiFi सह सम्बद्धं भविष्यति।</string>
+    <string name="rtmp">RTMP</string>
+    <string name="url">URL</string>
+    <string name="settings">विन्यासाः</string>
+    <string name="resolution">Resolution</string>
+    <string name="bitrate">Bitrate</string>
+    <string name="image_stabilization">Image Stabilization</string>
+    <string name="fps">FPS</string>
+    <string name="bitrate_warning">High bitrate might be unstable.</string>
+    <string name="status">स्थितिः</string>
+    <string name="start_stream">प्रसारणं आरभताम्</string>
+    <string name="reconnecting">पुनः सन्धानं क्रियते...</string>
+    <string name="preparing">सज्जता क्रियते...</string>
+    <string name="share_debug_logs">Share debug logs</string>
+    <string name="no_logs_toast">No logs yet</string>
+
+    <!-- States -->
+    <string name="state_idle">विरामः</string>
+    <string name="state_discovering">अन्वेषणं क्रियते</string>
+    <string name="state_connecting">सन्धानं क्रियते</string>
+    <string name="state_pairing">Pairing...</string>
+    <string name="state_stopping_stream">प्रसारणं स्थगयति</string>
+    <string name="state_preparing_stream">प्रसारणं सज्जं करोति</string>
+    <string name="state_setting_up_wifi">WiFi विन्यासः क्रियते</string>
+    <string name="state_wifi_setup_failed">WiFi विन्यासः विफलः</string>
+    <string name="state_configuring">विन्यासः</string>
+    <string name="state_starting_stream">प्रसारणं आरभते</string>
+    <string name="state_streaming">प्रसारणं प्रचलति</string>
+    <string name="state_reconnecting">Reconnecting</string>
+    <string name="state_unknown">अज्ञातम्</string>
+
+    <!-- Scanner -->
+    <string name="select_dji_device">DJI यन्त्रं चिनोतु</string>
+    <string name="bt_permission_required">Bluetooth अनुमतिः आवश्यकी।</string>
+    <string name="grant_bt_permission">Bluetooth अनुमतिं ददातु</string>
+    <string name="back">पृष्ठम्</string>
+    <string name="bt_disabled">Bluetooth निष्क्रियम्।</string>
+    <string name="scan_error">Scan error: %s</string>
+    <string name="show_all_devices">सर्वाणि यन्त्राणि दर्शयतु</string>
+    <string name="refresh">पुनश्चक्रणम्</string>
+    <string name="exit">निर्गमनम्</string>
+
+    <!-- Language -->
+    <string name="set_language">भाषां चिनोतु</string>
+    <string name="notification_channel_name">यन्त्रस्थितिः</string>
+    <string name="notification_title">DJI Remote स्थितिः</string>
+    <string name="phone_temp">दूरभाषः: %1$.1f°C</string>
+    <string name="dji_battery">DJI: %1$d%%</string>
+    <string name="no_device">यन्त्रं नास्ति</string>
+    <string name="enable_status_notification">स्थिति-सूचना दर्शयतु</string>
+    <string name="disable_status_notification">स्थिति-सूचनाम् अक्षमीकरोतु</string>
+    <string name="exit_app">अनुप्रयोगं त्यज</string>
+</resources>

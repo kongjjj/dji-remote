@@ -14,7 +14,7 @@ enum class SettingsDjiDeviceModel {
     OSMO_360;
 
     fun hasImageStabilization(): Boolean = when (this) {
-        OSMO_ACTION_4, OSMO_ACTION_5_PRO, OSMO_ACTION_6, OSMO_360 -> true
+        OSMO_ACTION_2, OSMO_ACTION_3, OSMO_ACTION_4, OSMO_ACTION_5_PRO, OSMO_ACTION_6, OSMO_POCKET_3, OSMO_POCKET_4, OSMO_360 -> true
         else -> false
     }
 
@@ -26,7 +26,9 @@ enum class SettingsDjiDeviceModel {
 
 enum class SettingsDjiDeviceState {
     IDLE, DISCOVERING, CONNECTING, PAIRING, STOPPING_STREAM, PREPARING_STREAM,
-    SETTING_UP_WIFI, WIFI_SETUP_FAILED, CONFIGURING, STARTING_STREAM, STREAMING, UNKNOWN
+    SETTING_UP_WIFI, WIFI_SETUP_FAILED, CONFIGURING, STARTING_STREAM, STREAMING,
+    RECONNECTING,   // 新增：正在重連中
+    UNKNOWN
 }
 
 enum class SettingsDjiDeviceImageStabilization {
@@ -49,5 +51,6 @@ data class SettingsDjiDevice(
     var imageStabilization: SettingsDjiDeviceImageStabilization = SettingsDjiDeviceImageStabilization.OFF,
     // Runtime state - included in data class equals/hashCode so StateFlow emits on change
     @Transient var isStarted: Boolean = false,
-    @Transient var state: SettingsDjiDeviceState = SettingsDjiDeviceState.IDLE
+    @Transient var state: SettingsDjiDeviceState = SettingsDjiDeviceState.IDLE,
+    @Transient var batteryPercentage: Int? = null
 )

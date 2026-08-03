@@ -1,0 +1,85 @@
+<resources>
+    <string name="app_name">DJI Remote</string>
+    <string name="dji_devices">Thiết bị DJI</string>
+    <string name="create">Tạo</string>
+    <string name="no_devices">Chưa có thiết bị nào</string>
+    <string name="add_device_hint">Nhấn Tạo để thêm thiết bị mới</string>
+    <string name="remove_last_setup">Xóa thiết lập cuối</string>
+    <string name="export_import_settings">Xuất/Nhập cài đặt</string>
+    <string name="stop_stream">Dừng livestream</string>
+    <string name="continue_last_stream">Tiếp tục livestream cuối</string>
+    <string name="confirm">Xác nhận</string>
+    <string name="confirm_remove_last_setup">Bạn có chắc chắn muốn xóa thiết lập cuối không?</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Hủy</string>
+    <string name="select_operation">Vui lòng chọn một thao tác:</string>
+    <string name="export">Xuất</string>
+    <string name="import_str">Nhập</string>
+    <string name="export_success">Xuất thành công</string>
+    <string name="export_failed">Xuất thất bại</string>
+    <string name="imported_n_settings">Đã nhập %d cài đặt mới</string>
+    <string name="no_new_settings">Không tìm thấy cài đặt mới (có thể bị trùng)</string>
+    <string name="import_failed">Nhập thất bại</string>
+    <string name="open_hotspot">Mở điểm phát sóng</string>
+    <string name="close_hotspot">Đóng điểm phát sóng</string>
+
+    <!-- Device Settings -->
+    <string name="name">Tên</string>
+    <string name="device">Thiết bị</string>
+    <string name="select_device">Chọn thiết bị</string>
+    <string name="wifi">WiFi</string>
+    <string name="ssid">SSID</string>
+    <string name="password">Mật khẩu</string>
+    <string name="wifi_hint">Thiết bị DJI sẽ kết nối với WiFi này và stream qua RTMP.</string>
+    <string name="rtmp">RTMP</string>
+    <string name="url">URL</string>
+    <string name="settings">Cài đặt</string>
+    <string name="resolution">Độ phân giải</string>
+    <string name="bitrate">Tốc độ bit</string>
+    <string name="image_stabilization">Chống rung hình ảnh</string>
+    <string name="fps">FPS</string>
+    <string name="bitrate_warning">Tốc độ bit cao có thể không ổn định.</string>
+    <string name="status">Trạng thái</string>
+    <string name="start_stream">Bắt đầu livestream</string>
+    <string name="reconnecting">Đang thử kết nối lại...</string>
+    <string name="preparing">Đang chuẩn bị...</string>
+    <string name="share_debug_logs">Chia sẻ nhật ký lỗi</string>
+    <string name="no_logs_toast">Chưa có nhật ký — hãy bắt đầu livestream trước</string>
+
+    <!-- States -->
+    <string name="state_idle">Đang chờ</string>
+    <string name="state_discovering">Đang tìm kiếm...</string>
+    <string name="state_connecting">Đang kết nối...</string>
+    <string name="state_pairing">Đang ghép đôi...</string>
+    <string name="state_stopping_stream">Đang dừng luồng</string>
+    <string name="state_preparing_stream">Đang chuẩn bị luồng</string>
+    <string name="state_setting_up_wifi">Đang thiết lập WiFi</string>
+    <string name="state_wifi_setup_failed">Thiết lập WiFi thất bại</string>
+    <string name="state_configuring">Đang cấu hình</string>
+    <string name="state_starting_stream">Đang bắt đầu luồng</string>
+    <string name="state_streaming">Đang livestream</string>
+    <string name="state_reconnecting">Đang kết nối lại</string>
+    <string name="state_unknown">Không xác định</string>
+
+    <!-- Scanner -->
+    <string name="select_dji_device">Chọn thiết bị DJI</string>
+    <string name="bt_permission_required">Tính năng này yêu cầu quyền Bluetooth để quét các thiết bị DJI.</string>
+    <string name="grant_bt_permission">Cấp quyền Bluetooth</string>
+    <string name="back">Quay lại</string>
+    <string name="bt_disabled">Bluetooth đã bị tắt. Vui lòng bật lại và thử lại.</string>
+    <string name="scan_error">Lỗi quét: %s</string>
+    <string name="show_all_devices">Hiển thị tất cả thiết bị</string>
+    <string name="refresh">Làm mới</string>
+    <string name="exit">Thoát</string>
+
+    <!-- Language -->
+    <string name="set_language">Cài đặt ngôn ngữ</string>
+    <string name="notification_channel_name">Trạng thái thiết bị</string>
+    <string name="notification_title">Trạng thái DJI Remote</string>
+    <string name="phone_temp">Điện thoại: %1$.1f°C</string>
+    <string name="dji_battery">DJI: %1$d%%</string>
+    <string name="no_device">Không có thiết bị</string>
+    <string name="enable_status_notification">Hiển thị thông báo trạng thái</string>
+    <string name="disable_status_notification">Vô hiệu hóa thông báo trạng thái</string>
+    <string name="exit_app">Thoát ứng dụng</string>
+</resources>
