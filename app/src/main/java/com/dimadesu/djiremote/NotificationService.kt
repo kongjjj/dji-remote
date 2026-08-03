@@ -11,7 +11,7 @@ import com.dimadesu.djiremote.dji.SettingsDjiDeviceState
 import com.dimadesu.djiremote.settings.AppSettings
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.collect
+import kotlin.system.exitProcess
 
 class NotificationService : Service() {
 
@@ -79,10 +79,13 @@ class NotificationService : Service() {
                 stopSelf()
 
                 // 5. Full exit after delay to allow broadcast to be processed and state saved
-                android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
-                    android.os.Process.killProcess(android.os.Process.myPid())
-                    System.exit(0)
-                }, 500)
+                Handler(Looper.getMainLooper()).postDelayed(
+                    {
+                        Process.killProcess(Process.myPid())
+                        exitProcess(0)
+                    },
+                    500,
+                )
 
                 return START_NOT_STICKY
             }
@@ -123,7 +126,7 @@ class NotificationService : Service() {
         val currentDevice = device ?: DjiRepository.devices.value.find { it.id == DjiRepository.lastUsedDeviceId.value }
         ?: DjiRepository.devices.value.firstOrNull()
 
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(NOTIFICATION_ID, buildNotification(currentDevice))
     }
 
@@ -163,16 +166,16 @@ class NotificationService : Service() {
         // Set accent color based on dark mode
         val isDarkMode = AppSettings.isDarkMode.value
         val accentColor = if (isDarkMode) 0xFFD0BCFF.toInt() else 0xFF6650a4.toInt()
-        builder.setColor(accentColor)
+        builder.color = accentColor
         builder.setColorized(true)
 
         // Add actions
-        if (device != null) {
-            if (device.isStarted && device.state == SettingsDjiDeviceState.STREAMING) {
+        device?.let { d ->
+            if (d.isStarted && (d.state == SettingsDjiDeviceState.STREAMING)) {
                 val stopIntent = Intent(this, NotificationService::class.java).setAction(ACTION_STOP_STREAM)
                 val stopPendingIntent = PendingIntent.getService(this, 1, stopIntent, PendingIntent.FLAG_IMMUTABLE)
                 builder.addAction(0, getString(R.string.stop_stream), stopPendingIntent)
-            } else if (!device.isStarted) {
+            } else if (!d.isStarted) {
                 val startIntent = Intent(this, NotificationService::class.java).setAction(ACTION_START_STREAM)
                 val startPendingIntent = PendingIntent.getService(this, 2, startIntent, PendingIntent.FLAG_IMMUTABLE)
                 builder.addAction(0, getString(R.string.start_stream), startPendingIntent)

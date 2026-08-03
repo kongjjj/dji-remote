@@ -3,6 +3,7 @@ package com.dimadesu.djiremote.dji
 import android.content.Context
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import java.lang.ref.WeakReference
 import java.util.UUID
 
 object DjiRepository {
@@ -12,12 +13,12 @@ object DjiRepository {
     private val _lastUsedDeviceId = MutableStateFlow<UUID?>(null)
     val lastUsedDeviceId: StateFlow<UUID?> = _lastUsedDeviceId
 
-    private var context: Context? = null
+    private var contextRef: WeakReference<Context>? = null
     private var isInitialized = false
 
     fun initialize(context: Context) {
         if (isInitialized) return
-        this.context = context.applicationContext
+        this.contextRef = WeakReference(context.applicationContext)
         isInitialized = true
 
         // Load devices from storage
@@ -32,13 +33,13 @@ object DjiRepository {
     }
 
     private fun saveToStorage() {
-        context?.let { ctx ->
+        contextRef?.get()?.let { ctx ->
             DjiDeviceStorage.saveDevices(ctx, _devices.value)
         }
     }
 
     fun addDevice(device: SettingsDjiDevice) {
-        _devices.value = _devices.value + device
+        _devices.value += device
         saveToStorage()
     }
 
@@ -56,17 +57,8 @@ object DjiRepository {
 
     fun updateLastUsedDevice(id: UUID) {
         _lastUsedDeviceId.value = id
-        context?.let { DjiDeviceStorage.saveLastUsedDeviceId(it, id) }
+        contextRef?.get()?.let { DjiDeviceStorage.saveLastUsedDeviceId(it, id) }
     }
 }
 
-// Fake scanner that returns discovered (simulated) devices
-object DjiScanner {
-    // Return triples of (id, address, name). In real scanning the id is derived from address.
-    private val simulated = listOf(
-        Triple(UUID.randomUUID().toString(), "AA:BB:CC:DD:EE:01", "DJI-Cam-001"),
-        Triple(UUID.randomUUID().toString(), "AA:BB:CC:DD:EE:02", "DJI-Cam-002")
-    )
-
-    fun getDiscoveredDevices(): List<Triple<String, String, String>> = simulated
-}
+// Removed unused DjiScanner object

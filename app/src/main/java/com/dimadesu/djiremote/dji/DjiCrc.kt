@@ -9,11 +9,11 @@ object DjiCrc {
         var crc = initial and 0xFF
         for (b in data) {
             crc = crc xor (b.toInt() and 0xFF)
-            for (i in 0 until 8) {
-                if ((crc and 0x01) != 0) {
-                    crc = (crc ushr 1) xor poly
+            repeat(8) {
+                crc = if ((crc and 0x01) != 0) {
+                    (crc ushr 1) xor poly
                 } else {
-                    crc = crc ushr 1
+                    crc ushr 1
                 }
             }
         }
@@ -28,11 +28,11 @@ object DjiCrc {
         var crc = initial and 0xFFFF
         for (b in data) {
             crc = crc xor (b.toInt() and 0xFF)
-            for (i in 0 until 8) {
-                if ((crc and 0x01) != 0) {
-                    crc = (crc ushr 1) xor poly
+            repeat(8) {
+                crc = if ((crc and 0x01) != 0) {
+                    (crc ushr 1) xor poly
                 } else {
-                    crc = crc ushr 1
+                    crc ushr 1
                 }
             }
         }

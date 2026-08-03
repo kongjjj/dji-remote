@@ -2,7 +2,7 @@ package com.dimadesu.djiremote.dji
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothManager
 import android.bluetooth.le.*
 import android.content.Context
 import android.content.pm.PackageManager
@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.StateFlow
 import java.nio.charset.StandardCharsets
 import java.util.UUID
 import android.bluetooth.le.ScanRecord
-import android.util.SparseArray
+import androidx.core.util.size
 import kotlinx.coroutines.flow.asStateFlow
 import android.util.Log
 
@@ -25,7 +25,7 @@ data class DiscoveredDjiDevice(
     val id: String,
     val address: String,
     val name: String,
-    val model: SettingsDjiDeviceModel
+    val model: SettingsDjiDeviceModel,
 )
 
 object DjiBleScanner {
@@ -44,21 +44,25 @@ object DjiBleScanner {
     fun hasPermissions(context: Context): Boolean {
         val result = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             val scanGranted = ContextCompat.checkSelfPermission(
-                context, Manifest.permission.BLUETOOTH_SCAN
+                context,
+                Manifest.permission.BLUETOOTH_SCAN,
             ) == PackageManager.PERMISSION_GRANTED
             val connectGranted = ContextCompat.checkSelfPermission(
-                context, Manifest.permission.BLUETOOTH_CONNECT
+                context,
+                Manifest.permission.BLUETOOTH_CONNECT,
             ) == PackageManager.PERMISSION_GRANTED
             // Even on Android S+, we still need location permission to get scan results!
             val locationGranted = ContextCompat.checkSelfPermission(
-                context, Manifest.permission.ACCESS_FINE_LOCATION
+                context,
+                Manifest.permission.ACCESS_FINE_LOCATION,
             ) == PackageManager.PERMISSION_GRANTED
             Log.d(TAG, "hasPermissions (S+): scan=$scanGranted, connect=$connectGranted, location=$locationGranted")
             scanGranted && connectGranted && locationGranted
         } else {
             // Older Android versions require location permission to scan
             val locationGranted = ContextCompat.checkSelfPermission(
-                context, Manifest.permission.ACCESS_FINE_LOCATION
+                context,
+                Manifest.permission.ACCESS_FINE_LOCATION,
             ) == PackageManager.PERMISSION_GRANTED
             Log.d(TAG, "hasPermissions (<S): location=$locationGranted")
             locationGranted
@@ -67,7 +71,8 @@ object DjiBleScanner {
     }
 
     fun isBluetoothEnabled(context: Context): Boolean {
-        val adapter = BluetoothAdapter.getDefaultAdapter() ?: return false
+        val manager = context.getSystemService(Context.BLUETOOTH_SERVICE) as? BluetoothManager
+        val adapter = manager?.adapter ?: return false
         return adapter.isEnabled
     }
 
@@ -76,7 +81,8 @@ object DjiBleScanner {
         Log.d(TAG, "startScanning called: filterOnlyDji=$filterOnlyDji, already scanning=$scanning")
         if (scanning) return
         this.filterOnlyDji = filterOnlyDji
-        val adapter = BluetoothAdapter.getDefaultAdapter()
+        val manager = context.getSystemService(Context.BLUETOOTH_SERVICE) as? BluetoothManager
+        val adapter = manager?.adapter
         if (adapter == null) {
             Log.e(TAG, "BluetoothAdapter is null")
             _scanError.value = "Bluetooth adapter not available"
@@ -112,7 +118,7 @@ object DjiBleScanner {
 
                     // Log manufacturer data for debugging
                     scanRecord?.manufacturerSpecificData?.let { mfgData ->
-                        for (i in 0 until mfgData.size()) {
+                        for (i in 0 until mfgData.size) {
                             val key = mfgData.keyAt(i)
                             val data = mfgData.valueAt(i)
                             val hex = data.joinToString(" ") { "%02X".format(it) }
@@ -217,7 +223,7 @@ object DjiBleScanner {
             if (data != null) break
         }
 
-        if (data != null && data.size >= 2) {
+        if ((data != null) && (data.size >= 2)) {
             // Model is in bytes 0-1 of manufacturer data (little-endian)
             val modelId = (data[0].toInt() and 0xFF) or ((data[1].toInt() and 0xFF) shl 8)
             Log.d(TAG, "  Model ID from manufacturer data: 0x${modelId.toString(16)}")

@@ -1,7 +1,7 @@
 package com.dimadesu.djiremote.dji
 
 import android.content.Context
-import android.content.SharedPreferences
+import androidx.core.content.edit
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.util.UUID
@@ -16,7 +16,7 @@ object DjiDeviceStorage {
     fun saveDevices(context: Context, devices: List<SettingsDjiDevice>) {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         val json = gson.toJson(devices)
-        prefs.edit().putString(KEY_DEVICES, json).apply()
+        prefs.edit { putString(KEY_DEVICES, json) }
     }
 
     fun loadDevices(context: Context): List<SettingsDjiDevice> {
@@ -26,14 +26,14 @@ object DjiDeviceStorage {
         return try {
             val type = object : TypeToken<List<SettingsDjiDevice>>() {}.type
             gson.fromJson(json, type) ?: emptyList()
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             emptyList()
         }
     }
 
     fun saveLastUsedDeviceId(context: Context, id: UUID?) {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        prefs.edit().putString(KEY_LAST_USED_ID, id?.toString()).apply()
+        prefs.edit { putString(KEY_LAST_USED_ID, id?.toString()) }
     }
 
     fun loadLastUsedDeviceId(context: Context): UUID? {
@@ -41,7 +41,7 @@ object DjiDeviceStorage {
         val idString = prefs.getString(KEY_LAST_USED_ID, null) ?: return null
         return try {
             UUID.fromString(idString)
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             null
         }
     }

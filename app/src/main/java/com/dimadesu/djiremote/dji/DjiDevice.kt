@@ -1,7 +1,6 @@
 package com.dimadesu.djiremote.dji
 
 import android.bluetooth.*
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
@@ -40,7 +39,7 @@ object DjiFileLogger {
     fun getPath(): String? = logFile?.absolutePath
 
     /** Returns the log file if it exists and is non-empty, or null. */
-    fun getFile(): File? = logFile?.takeIf { it.exists() && it.length() > 0 }
+    fun getFile(): File? = logFile?.takeIf { (it.exists()) && (it.length() > 0) }
 }
 
 // UUIDs from the iOS implementation (16-bit) expanded to 128-bit base
@@ -148,7 +147,7 @@ class DjiDevice(private val context: Context) {
         fps: Int,
         bitrateKbps: Int,
         imageStabilization: SettingsDjiDeviceImageStabilization,
-        model: SettingsDjiDeviceModel
+        model: SettingsDjiDeviceModel,
     ) {
         userStoppedManually = false
 
@@ -174,7 +173,11 @@ class DjiDevice(private val context: Context) {
         startStartStreamingTimer()
         setState(DjiDeviceState.DISCOVERING)
         Log.d(TAG, "Connecting to device at $address...")
-        connectToAddress(address)
+        try {
+            connectToAddress(address)
+        } catch (e: SecurityException) {
+            djiLog("SecurityException: Missing Bluetooth permissions? ${e.message}")
+        }
     }
 
     fun stopLiveStream() {
@@ -188,13 +191,19 @@ class DjiDevice(private val context: Context) {
         setState(DjiDeviceState.STOPPING_STREAM)
     }
 
-    fun getBatteryPercentage(): Int? = batteryPercentage
+    // Removed unused getBatteryPercentage()
+    // Removed unused getState()
+    // Removed unused disconnect()
 
     private fun reset() {
         stopStartStreamingTimer()
         stopStopStreamingTimer()
-        bluetoothGatt?.disconnect()
-        bluetoothGatt?.close()
+        try {
+            bluetoothGatt?.disconnect()
+            bluetoothGatt?.close()
+        } catch (e: SecurityException) {
+            djiLog("SecurityException during reset: ${e.message}")
+        }
         bluetoothGatt = null
         fff5Characteristic = null
         batteryPercentage = null
@@ -239,11 +248,13 @@ class DjiDevice(private val context: Context) {
         delegate?.djiDeviceStreamingState(this, state)
     }
 
-    fun getState(): DjiDeviceState = state
+    // Removed unused getState()
 
+    @android.annotation.SuppressLint("MissingPermission")
     fun connectToAddress(address: String) {
         Log.d(TAG, "connectToAddress: $address")
-        val adapter = BluetoothAdapter.getDefaultAdapter()
+        val bluetoothManager = context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+        val adapter = bluetoothManager.adapter
         if (adapter == null) {
             Log.e(TAG, "BluetoothAdapter is null!")
             return
@@ -265,6 +276,7 @@ class DjiDevice(private val context: Context) {
         writeMessage(msg)
     }
 
+    @android.annotation.SuppressLint("MissingPermission")
     private fun writeNextDescriptor() {
         if (isWritingDescriptor) return
         val descriptor = descriptorWriteQueue.removeFirstOrNull()
@@ -285,25 +297,28 @@ class DjiDevice(private val context: Context) {
         // Use NOTIFY (0x0100) for ALL characteristics - DJI camera doesn't support INDICATE on Android
         val descriptorValue = BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE // 0x01 00
 
-        // Use new API for Android 13+ (API 33+)
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-            val result = gatt.writeDescriptor(descriptor, descriptorValue)
-            Log.d(TAG, "  Descriptor write initiated (new API): result=$result, value=0x0100 (NOTIFY)")
-        } else {
-            descriptor.value = descriptorValue
-            val result = gatt.writeDescriptor(descriptor)
-            Log.d(TAG, "  Descriptor write initiated (old API): result=$result, value=0x0100 (NOTIFY)")
+        try {
+            // Use new API for Android 13+ (API 33+)
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                val result = gatt.writeDescriptor(descriptor, descriptorValue)
+                Log.d(TAG, "  Descriptor write initiated (new API): result=$result, value=0x0100 (NOTIFY)")
+            } else {
+                @Suppress("DEPRECATION")
+                descriptor.value = descriptorValue
+                @Suppress("DEPRECATION")
+                val result = gatt.writeDescriptor(descriptor)
+                Log.d(TAG, "  Descriptor write initiated (old API): result=$result, value=0x0100 (NOTIFY)")
+            }
+        } catch (e: SecurityException) {
+            djiLog("SecurityException during writeDescriptor: ${e.message}")
+            isWritingDescriptor = false
         }
     }
 
-    fun disconnect() {
-        bluetoothGatt?.disconnect()
-        bluetoothGatt?.close()
-        bluetoothGatt = null
-        setState(DjiDeviceState.IDLE)
-    }
+    // Removed unused disconnect()
 
     private val gattCallback = object : BluetoothGattCallback() {
+        @android.annotation.SuppressLint("MissingPermission")
         override fun onConnectionStateChange(gatt: BluetoothGatt, status: Int, newState: Int) {
             Log.d(TAG, "onConnectionStateChange: status=$status, newState=$newState")
             if (newState == BluetoothProfile.STATE_CONNECTED) {
@@ -311,7 +326,7 @@ class DjiDevice(private val context: Context) {
                 try {
                     gatt.requestMtu(128)
                 } catch (e: Exception) {
-                    Log.w(TAG, "MTU request failed, discovering services anyway")
+                    Log.w(TAG, "MTU request failed, discovering services anyway: ${e.message}")
                     gatt.discoverServices()
                 }
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
@@ -325,17 +340,25 @@ class DjiDevice(private val context: Context) {
                     bluetoothGatt?.close()
                     bluetoothGatt = null
 
-                    mainHandler.postDelayed({
-                        if (!userStoppedManually) {
-                            deviceAddress?.let { connectToAddress(it) }
-                        }
-                    }, 5000)
+                    mainHandler.postDelayed(
+                        {
+                            if (!userStoppedManually) {
+                                try {
+                                    deviceAddress?.let { connectToAddress(it) }
+                                } catch (e: SecurityException) {
+                                    djiLog("SecurityException during reconnect: ${e.message}")
+                                }
+                            }
+                        },
+                        5000,
+                    )
                 } else {
                     reset()
                 }
             }
         }
 
+        @android.annotation.SuppressLint("MissingPermission")
         override fun onMtuChanged(gatt: BluetoothGatt, mtu: Int, status: Int) {
             Log.d(TAG, "onMtuChanged: mtu=$mtu, status=$status")
             Log.d(TAG, "MTU negotiated, discovering services...")
@@ -348,7 +371,7 @@ class DjiDevice(private val context: Context) {
 
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 // Check if this was the FFF4 characteristic's notification descriptor
-                if (descriptor.characteristic.uuid == FFF4_UUID && descriptorWriteQueue.isEmpty()) {
+                if ((descriptor.characteristic.uuid == FFF4_UUID) && descriptorWriteQueue.isEmpty()) {
                     // Guard on state like Moblin does
                     if (state != DjiDeviceState.CONNECTING) {
                         Log.w(TAG, "FFF4 notification enabled but not in CONNECTING state, ignoring")
@@ -373,6 +396,7 @@ class DjiDevice(private val context: Context) {
             }
         }
 
+        @android.annotation.SuppressLint("MissingPermission")
         override fun onServicesDiscovered(gatt: BluetoothGatt, status: Int) {
             Log.d(TAG, "onServicesDiscovered: status=$status")
             if (status != BluetoothGatt.GATT_SUCCESS) {
@@ -385,7 +409,7 @@ class DjiDevice(private val context: Context) {
                 val fff5 = service.getCharacteristic(FFF5_UUID)
                 val fff4 = service.getCharacteristic(FFF4_UUID)
 
-                if (fff5 != null || fff4 != null) {
+                if ((fff5 != null) || (fff4 != null)) {
                     if (fff5 != null) fff5Characteristic = fff5
                     if (fff4 != null) fff4Characteristic = fff4
 
@@ -396,15 +420,14 @@ class DjiDevice(private val context: Context) {
                         gatt.setCharacteristicNotification(c, true)
 
                         if (c.uuid != FFF4_UUID) {
-                            val descriptor = c.getDescriptor(UUID.fromString("00002902-0000-1000-8000-00805f9b34fb"))
-                            if (descriptor != null) {
-                                descriptorWriteQueue.add(descriptor)
+                            c.getDescriptor(UUID.fromString("00002902-0000-1000-8000-00805f9b34fb"))?.let {
+                                descriptorWriteQueue.add(it)
                             }
                         }
                     }
 
-                    if (fff4Descriptor != null) {
-                        descriptorWriteQueue.add(fff4Descriptor)
+                    fff4Descriptor?.let {
+                        descriptorWriteQueue.add(it)
                     }
                     break
                 }
@@ -424,16 +447,17 @@ class DjiDevice(private val context: Context) {
         }
 
         override fun onCharacteristicChanged(gatt: BluetoothGatt, characteristic: BluetoothGattCharacteristic, value: ByteArray) {
-            processIncomingData(characteristic, value)
+            processIncomingData(value)
         }
 
-        @Suppress("DEPRECATION")
+        @Deprecated("Deprecated in Java")
         override fun onCharacteristicChanged(gatt: BluetoothGatt, characteristic: BluetoothGattCharacteristic) {
+            @Suppress("DEPRECATION")
             val value = characteristic.value ?: return
-            processIncomingData(characteristic, value)
+            processIncomingData(value)
         }
 
-        private fun processIncomingData(characteristic: BluetoothGattCharacteristic, value: ByteArray) {
+        private fun processIncomingData(value: ByteArray) {
             if (value.isEmpty()) return
             if (value[0] != 0x55.toByte()) return
 
@@ -514,6 +538,7 @@ class DjiDevice(private val context: Context) {
         mainHandler.post { writeNextChunk() }
     }
 
+    @android.annotation.SuppressLint("MissingPermission")
     private fun writeNextChunk() {
         val chunk = writeQueue.removeFirstOrNull()
         if (chunk == null) {
@@ -526,22 +551,28 @@ class DjiDevice(private val context: Context) {
             return
         }
 
-        val result = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-            bluetoothGatt?.writeCharacteristic(
-                char,
-                chunk,
-                BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE
-            ) ?: BluetoothStatusCodes.ERROR_MISSING_BLUETOOTH_CONNECT_PERMISSION
-        } else {
-            char.value = chunk
-            char.writeType = BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE
-            if (bluetoothGatt?.writeCharacteristic(char) == true) {
-                BluetoothStatusCodes.SUCCESS
+        try {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                bluetoothGatt?.writeCharacteristic(
+                    char,
+                    chunk,
+                    BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE,
+                )
             } else {
-                BluetoothGatt.GATT_FAILURE
+                @Suppress("DEPRECATION")
+                char.value = chunk
+                @Suppress("DEPRECATION")
+                char.writeType = BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE
+                @Suppress("DEPRECATION")
+                bluetoothGatt?.writeCharacteristic(char)
             }
+        } catch (e: SecurityException) {
+            djiLog("SecurityException during writeCharacteristic: ${e.message}")
         }
-        mainHandler.postDelayed({ writeNextChunk() }, writeIntervalMs)
+        mainHandler.postDelayed(
+            { writeNextChunk() },
+            writeIntervalMs,
+        )
     }
 
     private fun sendStopStream() {
@@ -587,11 +618,18 @@ class DjiDevice(private val context: Context) {
         if (!response.payload.contentEquals(byteArrayOf(0x00, 0x00))) {
             djiLog("WiFi setup FAILED")
             if (!userStoppedManually) {
-                mainHandler.postDelayed({
-                    if (!userStoppedManually) {
-                        deviceAddress?.let { connectToAddress(it) }
-                    }
-                }, 5000)
+                mainHandler.postDelayed(
+                    {
+                        if (!userStoppedManually) {
+                            try {
+                                deviceAddress?.let { connectToAddress(it) }
+                            } catch (e: SecurityException) {
+                                djiLog("SecurityException during reconnect: ${e.message}")
+                            }
+                        }
+                    },
+                    5000,
+                )
                 setState(DjiDeviceState.RECONNECTING)
             } else {
                 reset()
@@ -653,7 +691,7 @@ class DjiDevice(private val context: Context) {
     }
 
     private fun processStreaming(message: DjiMessage) {
-        if (message.type == 0x020D00 && message.payload.size >= 21) {
+        if ((message.type == 0x020D00) && (message.payload.size >= 21)) {
             val newBattery = message.payload[20].toInt()
             if (newBattery != batteryPercentage) {
                 batteryPercentage = newBattery

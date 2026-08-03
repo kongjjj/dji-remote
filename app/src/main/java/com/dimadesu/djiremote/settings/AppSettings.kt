@@ -2,6 +2,7 @@ package com.dimadesu.djiremote.settings
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.edit
 import androidx.core.os.LocaleListCompat
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -9,13 +10,12 @@ import kotlinx.coroutines.flow.StateFlow
 object AppSettings {
     private const val PREFS_NAME = "app_settings"
     private const val KEY_DARK_MODE = "dark_mode"
-    private const val KEY_LANGUAGE = "language"
     private const val KEY_STATUS_NOTIFICATION = "status_notification"
 
-    private val _isDarkMode = MutableStateFlow(false)
+    private val _isDarkMode = MutableStateFlow(value = false)
     val isDarkMode: StateFlow<Boolean> = _isDarkMode
 
-    private val _showStatusNotification = MutableStateFlow(false)
+    private val _showStatusNotification = MutableStateFlow(value = false)
     val showStatusNotification: StateFlow<Boolean> = _showStatusNotification
 
     fun initialize(context: Context) {
@@ -23,9 +23,11 @@ object AppSettings {
         _isDarkMode.value = prefs.getBoolean(KEY_DARK_MODE, false)
         _showStatusNotification.value = prefs.getBoolean(KEY_STATUS_NOTIFICATION, false)
 
-        // Language is handled by AppCompatDelegate automatically if set,
-        // but we can ensure it's applied if we want a specific default.
-        // If no language is set, it will follow system or English as per strings.xml
+        // Set default language to English on first install if not already set
+        if (AppCompatDelegate.getApplicationLocales().isEmpty) {
+            val appLocale: LocaleListCompat = LocaleListCompat.forLanguageTags("en")
+            AppCompatDelegate.setApplicationLocales(appLocale)
+        }
     }
 
     fun setLanguage(context: Context, languageCode: String) {
@@ -42,13 +44,13 @@ object AppSettings {
     fun toggleDarkMode(context: Context) {
         _isDarkMode.value = !_isDarkMode.value
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        prefs.edit().putBoolean(KEY_DARK_MODE, _isDarkMode.value).apply()
+        prefs.edit { putBoolean(KEY_DARK_MODE, _isDarkMode.value) }
     }
 
     fun toggleStatusNotification(context: Context) {
         _showStatusNotification.value = !_showStatusNotification.value
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        prefs.edit().putBoolean(KEY_STATUS_NOTIFICATION, _showStatusNotification.value).apply()
+        prefs.edit { putBoolean(KEY_STATUS_NOTIFICATION, _showStatusNotification.value) }
 
         // Trigger service start/stop
         val intent = android.content.Intent(context, com.dimadesu.djiremote.NotificationService::class.java)
