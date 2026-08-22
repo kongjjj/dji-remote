@@ -170,20 +170,21 @@ fun DjiDevicesSettingsScreen(onOpenDevice: (SettingsDjiDevice) -> Unit) {
             title = { Text(stringResource(R.string.language)) },
             text = {
                 val languages = listOf(
-                    "en" to stringResource(R.string.english),
-                    "zh-TW" to stringResource(R.string.traditional_chinese),
-                    "zh-CN" to stringResource(R.string.simplified_chinese),
-                    "ja" to stringResource(R.string.japanese),
-                    "ko" to stringResource(R.string.korean),
-                    "it" to stringResource(R.string.italian),
-                    "de" to stringResource(R.string.german),
-                    "fr" to stringResource(R.string.french),
-                    "es" to stringResource(R.string.spanish),
-                    "pt" to stringResource(R.string.portuguese),
-                    "ru" to stringResource(R.string.russian),
-                    "sa" to stringResource(R.string.sanskrit),
-                    "th" to stringResource(R.string.thai),
-                    "vi" to stringResource(R.string.vietnamese)
+                    "en" to "English",
+                    "zh-HK" to "繁體中文(香港)",
+                    "zh-TW" to "繁體中文(台灣)",
+                    "zh-CN" to "簡體中文",
+                    "ja" to "日本語",
+                    "ko" to "한국어",
+                    "it" to "Italiano",
+                    "de" to "Deutsch",
+                    "fr" to "Français",
+                    "es" to "Español",
+                    "pt" to "Português",
+                    "ru" to "Русский",
+                    "sa" to "संस्कृतम्",
+                    "th" to "ไทย",
+                    "vi" to "Tiếng Việt"
                 )
                 val currentLocales = AppCompatDelegate.getApplicationLocales()
                 val effectiveLocale = if (!currentLocales.isEmpty) currentLocales[0] else context.resources.configuration.locales[0]
@@ -191,7 +192,13 @@ fun DjiDevicesSettingsScreen(onOpenDevice: (SettingsDjiDevice) -> Unit) {
 
                 LazyColumn(modifier = Modifier.fillMaxWidth().heightIn(max = 450.dp)) {
                     items(languages) { (code, name) ->
-                        val isSelected = currentLangTag.startsWith(code, ignoreCase = true)
+                        val isSelected = when (code) {
+                            "en" -> currentLangTag.startsWith("en", ignoreCase = true)
+                            "zh-HK" -> currentLangTag.contains("HK", ignoreCase = true)
+                            "zh-TW" -> currentLangTag.contains("TW", ignoreCase = true) && !currentLangTag.contains("HK", ignoreCase = true)
+                            "zh-CN" -> (currentLangTag.contains("CN", ignoreCase = true) || currentLangTag.contains("Hans", ignoreCase = true)) && !currentLangTag.contains("TW", ignoreCase = true) && !currentLangTag.contains("HK", ignoreCase = true) && !currentLangTag.contains("Hant", ignoreCase = true)
+                            else -> currentLangTag.startsWith(code, ignoreCase = true)
+                        }
                         
                         TextButton(
                             onClick = {

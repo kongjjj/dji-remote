@@ -1,0 +1,107 @@
+<resources>
+    <string name="app_name">DJI Remote</string>
+    <string name="dji_devices">DJI 裝置</string>
+    <string name="create">建立</string>
+    <string name="no_devices">尚未有裝置</string>
+    <string name="add_device_hint">點擊建立來添加新裝置</string>
+    <string name="remove_last_setup">移除最後一次設定</string>
+    <string name="export_import_settings">匯出/匯入設定</string>
+    <string name="stop_stream">停止直播</string>
+    <string name="continue_last_stream">繼續上次直播</string>
+    <string name="confirm">確認</string>
+    <string name="confirm_remove_last_setup">您確定要移除最後一次設定嗎？</string>
+    <string name="ok">確定</string>
+    <string name="cancel">取消</string>
+    <string name="select_operation">請選擇操作：</string>
+    <string name="export">匯出</string>
+    <string name="import_str">匯入</string>
+    <string name="export_success">匯出成功</string>
+    <string name="export_failed">匯出失敗</string>
+    <string name="imported_n_settings">已匯入 %d 個新設定</string>
+    <string name="no_new_settings">未發現新設定（可能為重複）</string>
+    <string name="import_failed">匯入失敗</string>
+    <string name="open_hotspot">開啟熱點</string>
+    <string name="close_hotspot">關閉熱點</string>
+
+    <!-- Device Settings -->
+    <string name="name">名稱</string>
+    <string name="device">裝置</string>
+    <string name="select_device">選擇裝置</string>
+    <string name="wifi">WiFi</string>
+    <string name="ssid">SSID</string>
+    <string name="password">密碼</string>
+    <string name="wifi_hint">DJI 裝置將連接到此 WiFi 並通過 RTMP 進行直播。</string>
+    <string name="rtmp">RTMP</string>
+    <string name="url">URL</string>
+    <string name="settings">設定</string>
+    <string name="resolution">解析度</string>
+    <string name="bitrate">位元率</string>
+    <string name="image_stabilization">影像穩定</string>
+    <string name="fps">FPS</string>
+    <string name="bitrate_warning">高位元率可能不穩定。</string>
+    <string name="status">狀態</string>
+    <string name="start_stream">開始直播</string>
+    <string name="reconnecting">正在嘗試重新連接&#8230;</string>
+    <string name="preparing">準備中&#8230;</string>
+    <string name="share_debug_logs">分享除錯日誌</string>
+    <string name="no_logs_toast">尚無日誌 — 請先開始直播</string>
+
+    <!-- States -->
+    <string name="state_idle">閒置</string>
+    <string name="state_discovering">正在發現&#8230;</string>
+    <string name="state_connecting">正在連接&#8230;</string>
+    <string name="state_pairing">正在配對&#8230;</string>
+    <string name="state_stopping_stream">正在停止直播&#8230;</string>
+    <string name="state_preparing_stream">正在準備直播&#8230;</string>
+    <string name="state_setting_up_wifi">正在設定 WiFi&#8230;</string>
+    <string name="state_wifi_setup_failed">WiFi 設定失敗</string>
+    <string name="state_configuring">正在配置&#8230;</string>
+    <string name="state_starting_stream">正在開始直播&#8230;</string>
+    <string name="state_streaming">正在直播</string>
+    <string name="state_reconnecting">重新連接中&#8230;</string>
+    <string name="state_unknown">未知</string>
+
+    <!-- Scanner -->
+    <string name="select_dji_device">選擇 DJI 裝置</string>
+    <string name="bt_permission_required">此功能需要藍牙權限來掃描 DJI 裝置。</string>
+    <string name="grant_bt_permission">授予藍牙權限</string>
+    <string name="back">返回</string>
+    <string name="bt_disabled">藍牙已禁用。請開啟藍牙後重試。</string>
+    <string name="scan_error">掃描錯誤: %s</string>
+    <string name="show_all_devices">顯示所有裝置</string>
+    <string name="refresh">重新整理</string>
+    <string name="exit">退出</string>
+
+    <!-- Language -->
+    <string name="set_language">設定語言</string>
+    <string name="english">英語 (English)</string>
+    <string name="traditional_chinese">繁體中文 (Traditional Chinese)</string>
+    <string name="simplified_chinese">簡體中文 (Simplified Chinese)</string>
+    <string name="japanese">日本語 (Japanese)</string>
+    <string name="korean">韓國語 (Korean)</string>
+    <string name="italian">意大利語 (Italiano)</string>
+    <string name="german">德語 (Deutsch)</string>
+    <string name="french">法語 (Français)</string>
+    <string name="spanish">西班牙語 (Español)</string>
+    <string name="portuguese">葡萄牙語 (Português)</string>
+    <string name="russian">俄語 (Russian)</string>
+    <string name="sanskrit">梵語 (Sanskrit)</string>
+    <string name="thai">泰語 (Thai)</string>
+    <string name="vietnamese">越南語 (Vietnamese)</string>
+    <string name="notification_channel_name">裝置狀態</string>
+    <string name="notification_title">DJI Remote 狀態</string>
+    <string name="phone_temp">手機: %1$.1f°C</string>
+    <string name="dji_battery">DJI: %1$d%%</string>
+    <string name="no_device">無裝置</string>
+    <string name="enable_status_notification">顯示狀態通知</string>
+    <string name="disable_status_notification">停用狀態通知</string>
+    <string name="exit_app">結束程式</string>
+    <string name="delete_device">刪除裝置</string>
+    <string name="delete_device_confirm">您確定要刪除 \"%s\" 嗎？</string>
+    <string name="delete">刪除</string>
+    <string name="backup_restore">匯出/匯入設定</string>
+    <string name="export_devices">匯出設定到檔案</string>
+    <string name="import_devices">從檔案匯入設定</string>
+    <string name="language">設定程式語言</string>
+    <string name="backup">匯出/匯入設定</string>
+</resources>
