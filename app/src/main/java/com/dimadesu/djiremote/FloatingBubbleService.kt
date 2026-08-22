@@ -3,7 +3,6 @@ package com.dimadesu.djiremote
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -15,8 +14,11 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
+import android.view.WindowManager.LayoutParams
 import android.widget.ImageView
 import androidx.core.app.NotificationCompat
+import androidx.core.content.getSystemService
+import kotlin.math.abs
 
 class FloatingBubbleService : Service() {
 
@@ -37,20 +39,22 @@ class FloatingBubbleService : Service() {
         createNotificationChannel()
         startForeground(NOTIFICATION_ID, createNotification())
 
-        windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        windowManager = getSystemService<WindowManager>()!!
+        @Suppress("InflateParams")
         floatingView = LayoutInflater.from(this).inflate(R.layout.layout_floating_bubble, null)
 
+        @Suppress("DEPRECATION")
         val layoutType = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+            LayoutParams.TYPE_APPLICATION_OVERLAY
         } else {
-            WindowManager.LayoutParams.TYPE_PHONE
+            LayoutParams.TYPE_PHONE
         }
 
-        params = WindowManager.LayoutParams(
-            WindowManager.LayoutParams.WRAP_CONTENT,
-            WindowManager.LayoutParams.WRAP_CONTENT,
+        params = LayoutParams(
+            LayoutParams.WRAP_CONTENT,
+            LayoutParams.WRAP_CONTENT,
             layoutType,
-            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+            LayoutParams.FLAG_NOT_FOCUSABLE,
             PixelFormat.TRANSLUCENT
         )
 
@@ -61,6 +65,7 @@ class FloatingBubbleService : Service() {
         windowManager.addView(floatingView, params)
 
         val bubbleIcon = floatingView.findViewById<ImageView>(R.id.bubble_icon)
+        @android.annotation.SuppressLint("ClickableViewAccessibility")
         bubbleIcon.setOnTouchListener(object : View.OnTouchListener {
             private var initialX: Int = 0
             private var initialY: Int = 0
@@ -80,6 +85,7 @@ class FloatingBubbleService : Service() {
                     }
                     MotionEvent.ACTION_UP -> {
                         if (!isMoving) {
+                            v.performClick()
                             // Click detected - restore app
                             val intent = Intent(this@FloatingBubbleService, MainActivity::class.java)
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -92,7 +98,7 @@ class FloatingBubbleService : Service() {
                         val dx = (event.rawX - initialTouchX).toInt()
                         val dy = (event.rawY - initialTouchY).toInt()
 
-                        if (Math.abs(dx) > 10 || Math.abs(dy) > 10) {
+                        if (abs(dx) > 10 || abs(dy) > 10) {
                             isMoving = true
                         }
 
@@ -114,7 +120,7 @@ class FloatingBubbleService : Service() {
             val name = "Floating Bubble"
             val importance = NotificationManager.IMPORTANCE_MIN
             val channel = NotificationChannel(CHANNEL_ID, name, importance)
-            val notificationManager = getSystemService(NotificationManager::class.java)
+            val notificationManager = getSystemService<NotificationManager>()!!
             notificationManager.createNotificationChannel(channel)
         }
     }

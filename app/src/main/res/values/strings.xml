@@ -22,6 +22,14 @@
     <string name="import_failed">Import failed</string>
     <string name="open_hotspot">Open Hotspot</string>
     <string name="close_hotspot">Close Hotspot</string>
+    <string name="delete_device">Delete Device</string>
+    <string name="delete_device_confirm">Are you sure you want to delete \"%s\"?</string>
+    <string name="delete">Delete</string>
+    <string name="backup_restore">Backup / Restore</string>
+    <string name="export_devices">Export Devices</string>
+    <string name="import_devices">Import Devices</string>
+    <string name="language">Language</string>
+    <string name="backup">Backup</string>
 
     <!-- Device Settings -->
     <string name="name">Name</string>

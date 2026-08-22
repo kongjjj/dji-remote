@@ -22,6 +22,14 @@
     <string name="import_failed">匯入失敗</string>
     <string name="open_hotspot">開啟熱點</string>
     <string name="close_hotspot">關閉熱點</string>
+    <string name="delete_device">刪除裝置</string>
+    <string name="delete_device_confirm">確定要刪除 \"%s\" 嗎？</string>
+    <string name="delete">刪除</string>
+    <string name="backup_restore">匯出/匯入設定</string>
+    <string name="export_devices">匯出設定到檔案</string>
+    <string name="import_devices">從檔案匯入設定</string>
+    <string name="language">設定程式語言</string>
+    <string name="backup">匯出/匯入設定</string>
 
     <!-- Device Settings -->
     <string name="name">名稱</string>

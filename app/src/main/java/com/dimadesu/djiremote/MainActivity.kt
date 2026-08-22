@@ -28,6 +28,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 
 class MainActivity : AppCompatActivity() {
     private val exitReceiver = object : BroadcastReceiver() {
@@ -59,11 +60,12 @@ class MainActivity : AppCompatActivity() {
             startNotificationServiceIfEnabled()
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            registerReceiver(exitReceiver, IntentFilter("com.dimadesu.djiremote.ACTION_EXIT_APP"), RECEIVER_NOT_EXPORTED)
-        } else {
-            registerReceiver(exitReceiver, IntentFilter("com.dimadesu.djiremote.ACTION_EXIT_APP"))
-        }
+        ContextCompat.registerReceiver(
+            this,
+            exitReceiver,
+            IntentFilter("com.dimadesu.djiremote.ACTION_EXIT_APP"),
+            ContextCompat.RECEIVER_NOT_EXPORTED
+        )
 
         enableEdgeToEdge()
         setContent {
@@ -139,7 +141,7 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
         try {
             unregisterReceiver(exitReceiver)
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             // Ignore
         }
     }
