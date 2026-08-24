@@ -22,6 +22,12 @@
     <string name="import_failed">Nhập thất bại</string>
     <string name="open_hotspot">Mở điểm phát sóng</string>
     <string name="close_hotspot">Đóng điểm phát sóng</string>
+    <string name="delete_device">Xóa thiết bị</string>
+    <string name="delete_device_confirm">Bạn có chắc chắn muốn xóa \"%s\" không?</string>
+    <string name="delete">Xóa</string>
+    <string name="backup_restore">Xuất/Nhập cài đặt</string>
+    <string name="export_devices">Xuất cài đặt ra tệp</string>
+    <string name="import_devices">Nhập cài đặt từ tệp</string>
 
     <!-- Device Settings -->
     <string name="name">Tên</string>

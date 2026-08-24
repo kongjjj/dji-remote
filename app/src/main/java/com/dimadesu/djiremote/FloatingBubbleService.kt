@@ -18,6 +18,15 @@ import android.view.WindowManager.LayoutParams
 import android.widget.ImageView
 import androidx.core.app.NotificationCompat
 import androidx.core.content.getSystemService
+import com.dimadesu.djiremote.dji.DjiModel
+import com.dimadesu.djiremote.dji.DjiRepository
+import com.dimadesu.djiremote.dji.SettingsDjiDevice
+import com.dimadesu.djiremote.dji.SettingsDjiDeviceState
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.launch
 import kotlin.math.abs
 
 class FloatingBubbleService : Service() {
@@ -25,6 +34,8 @@ class FloatingBubbleService : Service() {
     private lateinit var windowManager: WindowManager
     private lateinit var floatingView: View
     private lateinit var params: WindowManager.LayoutParams
+    private val serviceJob = Job()
+    private val serviceScope = CoroutineScope(Dispatchers.Main + serviceJob)
 
     companion object {
         private const val NOTIFICATION_ID = 1002
@@ -64,9 +75,38 @@ class FloatingBubbleService : Service() {
 
         windowManager.addView(floatingView, params)
 
-        val bubbleIcon = floatingView.findViewById<ImageView>(R.id.bubble_icon)
+        val streamControlButton = floatingView.findViewById<ImageView>(R.id.stream_control_button)
+        val floatingContainer = floatingView.findViewById<View>(R.id.floating_container)
+
+        DjiRepository.initialize(this)
+        var isStreaming = false
+        var currentLastDevice: SettingsDjiDevice? = null
+
+        serviceScope.launch {
+            combine(DjiRepository.lastUsedDeviceId, DjiRepository.devices) { lastId, devices ->
+                devices.find { it.id == lastId } ?: devices.firstOrNull()
+            }.collect { deviceToUse ->
+                currentLastDevice = deviceToUse
+                if (deviceToUse != null) {
+                    streamControlButton.visibility = View.VISIBLE
+                    isStreaming = deviceToUse.isStarted || deviceToUse.state != SettingsDjiDeviceState.IDLE
+                    streamControlButton.setImageResource(
+                        if (isStreaming) R.drawable.ic_stop_white_45 else R.drawable.ic_play_white_45
+                    )
+                    // Set red background tint when streaming, default (null) when idle to use XML background
+                    streamControlButton.backgroundTintList = if (isStreaming) {
+                        android.content.res.ColorStateList.valueOf(0x80FF0000.toInt())
+                    } else {
+                        null
+                    }
+                } else {
+                    streamControlButton.visibility = View.GONE
+                }
+            }
+        }
+
         @android.annotation.SuppressLint("ClickableViewAccessibility")
-        bubbleIcon.setOnTouchListener(object : View.OnTouchListener {
+        floatingContainer.setOnTouchListener(object : View.OnTouchListener {
             private var initialX: Int = 0
             private var initialY: Int = 0
             private var initialTouchX: Float = 0f
@@ -86,11 +126,27 @@ class FloatingBubbleService : Service() {
                     MotionEvent.ACTION_UP -> {
                         if (!isMoving) {
                             v.performClick()
-                            // Click detected - restore app
-                            val intent = Intent(this@FloatingBubbleService, MainActivity::class.java)
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            startActivity(intent)
-                            stopSelf()
+                            // Check which button was clicked based on rawX vs view position
+                            val location = IntArray(2)
+                            v.getLocationOnScreen(location)
+                            val clickX = event.rawX - location[0]
+                            
+                            if (streamControlButton.visibility == View.VISIBLE && clickX > v.width / 2) {
+                                // Clicked right side (stream control)
+                                currentLastDevice?.let { device ->
+                                    if (isStreaming) {
+                                        DjiModel.stopStreaming(device)
+                                    } else {
+                                        DjiModel.startStreaming(this@FloatingBubbleService, device)
+                                    }
+                                }
+                            } else {
+                                // Clicked left side or background (restore app)
+                                val intent = Intent(this@FloatingBubbleService, MainActivity::class.java)
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                startActivity(intent)
+                                stopSelf()
+                            }
                         }
                         return true
                     }
@@ -136,6 +192,7 @@ class FloatingBubbleService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
+        serviceJob.cancel()
         if (::floatingView.isInitialized) {
             windowManager.removeView(floatingView)
         }

@@ -84,7 +84,7 @@
     <string name="set_language">設定程式語言</string>
     <string name="english">英文</string>
     <string name="traditional_chinese">繁體中文 (台灣)</string>
-    <string name="simplified_chinese">簡體中文</string>
+    <string name="simplified_chinese">简体中文</string>
     <string name="japanese">日本語</string>
     <string name="korean">한국어</string>
     <string name="italian">義大利文</string>
@@ -104,4 +104,5 @@
     <string name="enable_status_notification">顯示狀態通知欄</string>
     <string name="disable_status_notification">停用狀態通知欄</string>
     <string name="exit_app">關閉程式</string>
+    <string name="stream_control_description">直播控制</string>
 </resources>

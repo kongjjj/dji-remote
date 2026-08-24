@@ -22,6 +22,12 @@
     <string name="import_failed">Ошибка импорта</string>
     <string name="open_hotspot">Включить точку доступа</string>
     <string name="close_hotspot">Выключить точку доступа</string>
+    <string name="delete_device">Удалить устройство</string>
+    <string name="delete_device_confirm">Вы уверены, что хотите удалить \"%s\"?</string>
+    <string name="delete">Удалить</string>
+    <string name="backup_restore">Экспорт/Импорт настроек</string>
+    <string name="export_devices">Экспортировать настройки в файл</string>
+    <string name="import_devices">Импортировать настройки из файла</string>
 
     <!-- Device Settings -->
     <string name="name">Имя</string>

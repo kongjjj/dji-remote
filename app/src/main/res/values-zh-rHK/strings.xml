@@ -104,4 +104,5 @@
     <string name="import_devices">從檔案匯入設定</string>
     <string name="language">設定程式語言</string>
     <string name="backup">匯出/匯入設定</string>
+    <string name="stream_control_description">直播控制</string>
 </resources>

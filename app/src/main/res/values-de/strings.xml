@@ -22,6 +22,12 @@
     <string name="import_failed">Import fehlgeschlagen</string>
     <string name="open_hotspot">Hotspot Öffnen</string>
     <string name="close_hotspot">Hotspot Schließen</string>
+    <string name="delete_device">Gerät löschen</string>
+    <string name="delete_device_confirm">Sind Sie sicher, dass Sie \"%s\" löschen möchten?</string>
+    <string name="delete">Löschen</string>
+    <string name="backup_restore">Einstellungen Exportieren/Importieren</string>
+    <string name="export_devices">Einstellungen in Datei exportieren</string>
+    <string name="import_devices">Einstellungen aus Datei importieren</string>
 
     <!-- Device Settings -->
     <string name="name">Name</string>

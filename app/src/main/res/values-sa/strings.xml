@@ -22,6 +22,12 @@
     <string name="import_failed">आयात विफलः</string>
     <string name="open_hotspot">Hotspot उद्घाटयतु</string>
     <string name="close_hotspot">Hotspot पिधत्ते</string>
+    <string name="delete_device">यन्त्रं निष्कासयतु</string>
+    <string name="delete_device_confirm">किं भवान् \"%s\" निष्कासयितुं इच्छति?</string>
+    <string name="delete">निष्कासयतु</string>
+    <string name="backup_restore">विन्यासानां निर्यात/आयात</string>
+    <string name="export_devices">सञ्चिकायां विन्यासानां निर्यातं करोतु</string>
+    <string name="import_devices">सञ्चिकातः विन्यासानां आयातं करोतु</string>
 
     <!-- Device Settings -->
     <string name="name">नाम</string>

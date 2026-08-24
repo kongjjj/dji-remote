@@ -1,15 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/floating_container"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="8dp">
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:padding="5dp"
+    android:background="@drawable/floating_bubble_bg"
+    android:elevation="8dp">
 
     <ImageView
         android:id="@+id/bubble_icon"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:src="@mipmap/ic_launcher_round"
-        android:background="@android:drawable/btn_default"
-        android:contentDescription="Floating Bubble"
-        android:elevation="8dp" />
-</FrameLayout>
+        android:contentDescription="Floating Bubble" />
+
+    <ImageView
+        android:id="@+id/stream_control_button"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="5dp"
+        android:src="@drawable/ic_play_white_45"
+        android:background="@drawable/control_button_bg"
+        android:contentDescription="@string/stream_control_description"
+        android:padding="8dp"
+        android:visibility="gone" />
+</LinearLayout>

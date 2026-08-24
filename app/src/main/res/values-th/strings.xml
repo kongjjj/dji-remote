@@ -22,6 +22,12 @@
     <string name="import_failed">นำเข้าล้มเหลว</string>
     <string name="open_hotspot">เปิดฮอตสปอต</string>
     <string name="close_hotspot">ปิดฮอตสปอต</string>
+    <string name="delete_device">ลบอุปกรณ์</string>
+    <string name="delete_device_confirm">คุณแน่ใจหรือไม่ว่าต้องการลบ \"%s\"?</string>
+    <string name="delete">ลบ</string>
+    <string name="backup_restore">ส่งออก/นำเข้าการตั้งค่า</string>
+    <string name="export_devices">ส่งออกการตั้งค่าไปยังไฟล์</string>
+    <string name="import_devices">นำเข้าการตั้งค่าจากไฟล์</string>
 
     <!-- Device Settings -->
     <string name="name">ชื่อ</string>

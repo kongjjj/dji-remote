@@ -173,7 +173,7 @@ fun DjiDevicesSettingsScreen(onOpenDevice: (SettingsDjiDevice) -> Unit) {
                     "en" to "English",
                     "zh-HK" to "繁體中文(香港)",
                     "zh-TW" to "繁體中文(台灣)",
-                    "zh-CN" to "簡體中文",
+                    "zh-CN" to "简体中文",
                     "ja" to "日本語",
                     "ko" to "한국어",
                     "it" to "Italiano",

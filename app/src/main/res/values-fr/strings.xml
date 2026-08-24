@@ -22,6 +22,12 @@
     <string name="import_failed">Échec de l\'importation</string>
     <string name="open_hotspot">Ouvrir le point d\'accès</string>
     <string name="close_hotspot">Fermer le point d\'accès</string>
+    <string name="delete_device">Supprimer l\'appareil</string>
+    <string name="delete_device_confirm">Êtes-vous sûr de vouloir supprimer \"%s\" ?</string>
+    <string name="delete">Supprimer</string>
+    <string name="backup_restore">Exporter/Importer les paramètres</string>
+    <string name="export_devices">Exporter les paramètres vers un fichier</string>
+    <string name="import_devices">Importer les paramètres depuis un fichier</string>
 
     <!-- Device Settings -->
     <string name="name">Nom</string>

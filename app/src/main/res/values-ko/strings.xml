@@ -22,6 +22,12 @@
     <string name="import_failed">가져오기 실패</string>
     <string name="open_hotspot">핫스팟 켜기</string>
     <string name="close_hotspot">핫스팟 끄기</string>
+    <string name="delete_device">장치 삭제</string>
+    <string name="delete_device_confirm">\"%s\"을(를) 삭제하시겠습니까?</string>
+    <string name="delete">삭제</string>
+    <string name="backup_restore">설정 내보내기/가져오기</string>
+    <string name="export_devices">설정을 파일로 내보내기</string>
+    <string name="import_devices">파일에서 설정 가져오기</string>
 
     <!-- Device Settings -->
     <string name="name">이름</string>
